@@ -9,6 +9,8 @@ ADD_DEFINITIONS(-std=c++11)
 INCLUDE_DIRECTORIES(
 	"${PROJECT_SOURCE_DIR}"
 	"${PROJECT_SOURCE_DIR}/src"
+	"/usr/local/include/mongocxx/v_noabi"
+	"/usr/local/include/bsoncxx/v_noabi"
 )
 
 LINK_DIRECTORIES(
@@ -16,6 +18,7 @@ LINK_DIRECTORIES(
 )
 
 LINK_LIBRARIES(
+	-lmongocxx -lbsoncxx
 )
 
 
@@ -26,7 +29,7 @@ ADD_EXECUTABLE(bmftest
 )
 
 TARGET_LINK_LIBRARIES(bmftest PUBLIC
-	-pthread
+	-lmongocxx -lbsoncxx -pthread
 )
 
 

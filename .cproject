@@ -50,6 +50,16 @@
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/bullet-collision}&quot;"/>
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/bullet-collision/src}&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="/usr/local/include/mongocxx/v_noabi"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="/usr/local/include/bsoncxx/v_noabi"/>
+                                    								
+                                </option>
+                                								
+                                <option id="gnu.cpp.compiler.option.preprocessor.def.303203577" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+                                    									
+                                    <listOptionValue builtIn="false" value="MONGOCXX_API"/>
                                     								
                                 </option>
                                 								
@@ -84,6 +94,8 @@
                             </tool>
                             							
                             <tool id="cdt.managedbuild.tool.gnu.assembler.base.1960466428" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
+                                								
+                                <option id="gnu.both.asm.option.include.paths.1002724176" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath"/>
                                 								
                                 <inputType id="cdt.managedbuild.tool.gnu.assembler.input.239222661" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
                                 							

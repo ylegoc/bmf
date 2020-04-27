@@ -33,3 +33,4 @@
 
 # Eclipse
 .settings
+/build-cpp/
