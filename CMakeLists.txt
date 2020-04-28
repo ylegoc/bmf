@@ -21,22 +21,44 @@ LINK_LIBRARIES(
 	-lmongocxx -lbsoncxx
 )
 
+### Lib ###
+ADD_LIBRARY(bmf SHARED
+	src/lib/BMF.cpp src/lib/BMF.h
+)
+
+target_link_libraries(bmf
+
+)
+
 
 ### Apps ###
 
-ADD_EXECUTABLE(bmftest
-	src/test/Test.cpp
+ADD_EXECUTABLE(bmftestmongo
+	src/test/TestMongo.cpp
 )
 
-TARGET_LINK_LIBRARIES(bmftest PUBLIC
+TARGET_LINK_LIBRARIES(bmftestmongo PUBLIC
 	-lmongocxx -lbsoncxx -pthread
+)
+
+
+ADD_EXECUTABLE(bmftestmongodistance
+	src/test/TestMongoDistance.cpp
+)
+
+TARGET_LINK_LIBRARIES(bmftestmongodistance PUBLIC
+	bmf -lmongocxx -lbsoncxx -pthread
 )
 
 
 ### Installs ###
 
-
 INSTALL(
-	TARGETS bmftest
-	DESTINATION bin
+	TARGETS bmf
+	DESTINATION lib
 )
+
+#INSTALL(
+#	TARGETS bmftestmongo
+#	DESTINATION bin
+#)
