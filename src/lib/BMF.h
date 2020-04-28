@@ -21,6 +21,13 @@ inline double toRadians(double angle) {
 	return (M_PI / 180.0) * angle;
 }
 
+inline double sign(double value) {
+	if (value > 0.0) {
+		return 1.0;
+	}
+	return -1.0;
+}
+
 /**
  * Class providing the calculations of BMF.
  */
@@ -30,7 +37,12 @@ public:
 	/**
 	 * Initialises with the longitude and latitude of the center in degrees.
 	 */
-	BMF(double centerLng, double centerLat);
+	BMF();
+
+	/**
+	 * Sets the center.
+	 */
+	void setCenter(double centerLng, double centerLat);
 
 	/**
 	 * Gets the euclidean distance between two Point with length coordinates.
@@ -46,7 +58,7 @@ public:
 	/**
 	 * Gets the local point from longitude and latitude.
 	 */
-	Point getPoint(double lng, double lat) const;
+	Point getLocalPoint(double lng, double lat) const;
 
 private:
 	Point m_center;

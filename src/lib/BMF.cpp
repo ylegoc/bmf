@@ -5,8 +5,10 @@ using namespace std;
 
 namespace bmf {
 
-BMF::BMF(double centerLng, double centerLat) :
-	m_center(toRadians(centerLng), toRadians(centerLat)) {
+BMF::BMF() {}
+
+void BMF::setCenter(double centerLng, double centerLat) {
+	m_center = Point(toRadians(centerLng), toRadians(centerLat));
 }
 
 double BMF::getEuclideanDistance(const Point & a, const Point & b) const {
@@ -31,15 +33,15 @@ double BMF::getGeodesicDistance(const Point & a, const Point & b) const {
 	return d;
 }
 
-Point BMF::getPoint(double lng, double lat) const {
+Point BMF::getLocalPoint(double lng, double lat) const {
 
 	Point point(toRadians(lng), toRadians(lat));
 
 	Point px(m_center.x, point.y);
 	Point py(point.x, m_center.y);
 
-	double dx = getGeodesicDistance(px, m_center);
-	double dy = getGeodesicDistance(py, m_center);
+	double dx = sign(point.x - m_center.x) * getGeodesicDistance(px, m_center);
+	double dy = sign(point.y - m_center.y) * getGeodesicDistance(py, m_center);
 
 	return Point(dx, dy);
 }

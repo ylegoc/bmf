@@ -33,6 +33,15 @@ target_link_libraries(bmf
 
 ### Apps ###
 
+ADD_EXECUTABLE(bmfinitproto
+	src/test/InitProtoDB.cpp
+)
+
+TARGET_LINK_LIBRARIES(bmfinitproto PUBLIC
+	bmf -lmongocxx -lbsoncxx
+)
+
+
 ADD_EXECUTABLE(bmftestmongo
 	src/test/TestMongo.cpp
 )
