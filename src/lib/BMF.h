@@ -40,29 +40,12 @@ public:
 	BMF();
 
 	/**
-	 * Sets the center.
-	 */
-	void setCenter(double centerLng, double centerLat);
-
-	/**
-	 * Gets the euclidean distance between two Point with length coordinates.
-	 */
-	double getEuclideanDistance(const Point & a, const Point & b = Point()) const;
-
-	/**
 	 * Gets the geodesic distance between two Point with geodesic coordinates (radians).
 	 * a.x = lng, a.y = lat
 	 */
 	double getGeodesicDistance(const Point & a, const Point & b) const;
 
-	/**
-	 * Gets the local point from longitude and latitude.
-	 */
-	Point getLocalPoint(double lng, double lat) const;
-
 private:
-	Point m_center;
-
 	static constexpr double R = 6371.0;
 };
 

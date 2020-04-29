@@ -21,9 +21,9 @@ void createMentor(
 		mongocxx::collection& mentors) {
 
 
-	// Calculate local start and local end.
-	bmf::Point localStart = bmfAPI.getLocalPoint(startLng, startLat);
-	bmf::Point localEnd = bmfAPI.getLocalPoint(endLng, endLat);
+	bmf::Point start(bmf::toRadians(startLng), bmf::toRadians(startLat));
+	bmf::Point end(bmf::toRadians(endLng), bmf::toRadians(endLat));
+	double distance = bmfAPI.getGeodesicDistance(start, end);
 
 	bsoncxx::builder::stream::document document{};
     document
@@ -35,12 +35,7 @@ void createMentor(
 		<< "end" << bsoncxx::builder::stream::open_array
 			<< endLng << endLat
 			<< bsoncxx::builder::stream::close_array
-		<< "ls" << bsoncxx::builder::stream::open_array
-			<< localStart.x << localStart.y
-			<< bsoncxx::builder::stream::close_array
-		<< "le" << bsoncxx::builder::stream::open_array
-			<< localEnd.x << localEnd.y
-			<< bsoncxx::builder::stream::close_array;
+		<< "dist" << distance;
 
 	mentors.insert_one(document.view());
 }
@@ -52,17 +47,7 @@ int main(int, char**) {
 	mongocxx::client client(uri);
 
 	mongocxx::database db = client["bmf-proto"];
-
 	mongocxx::collection settings = db["settings"];
-
-	mongocxx::cursor cursor = settings.find({});
-	bsoncxx::document::view document = *cursor.begin();
-
-	double lng = document["center"].get_array().value[0].get_double();
-	double lat = document["center"].get_array().value[1].get_double();
-
-	bmfAPI.setCenter(lng, lat);
-
 	mongocxx::collection mentors = db["mentors"];
 	mentors.drop();
 

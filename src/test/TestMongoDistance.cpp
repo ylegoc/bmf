@@ -21,18 +21,8 @@ int main(int, char**) {
 	BMF bmfAPI;
 
 	mongocxx::collection settings = db["settings"];
-
-	mongocxx::cursor cursor = settings.find({});
-	bsoncxx::document::view document = *cursor.begin();
-
-	double lng = document["center"].get_array().value[0].get_double();
-	double lat = document["center"].get_array().value[1].get_double();
-
-	bmfAPI.setCenter(lng, lat);
-
-
 	mongocxx::collection mentors = db["mentors"];
-	cursor = mentors.find({});
+	mongocxx::cursor cursor = mentors.find({});
 
 	// Iterate the documents
 	for (bsoncxx::document::view document : cursor) {
@@ -45,7 +35,7 @@ int main(int, char**) {
 		double lat = document["start"].get_array().value[1].get_double();
 
 		cout << "Pseudo " << pseudo << " @ " << lng << ", " << lat << endl;
-		cout << "Distance x, y = " << bmfAPI.getEuclideanDistance(bmfAPI.getLocalPoint(lng, lat)) << endl << endl;
+		cout << "Distance " << document["dist"].get_double().value << endl << endl;
 	}
 
 	return 0;

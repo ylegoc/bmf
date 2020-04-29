@@ -7,18 +7,6 @@ namespace bmf {
 
 BMF::BMF() {}
 
-void BMF::setCenter(double centerLng, double centerLat) {
-	m_center = Point(toRadians(centerLng), toRadians(centerLat));
-}
-
-double BMF::getEuclideanDistance(const Point & a, const Point & b) const {
-
-	double x = b.x - a.x;
-	double y = b.y - a.y;
-
-	return sqrt(x * x + y * y);
-}
-
 // Lat = y
 // Lng = x
 double BMF::getGeodesicDistance(const Point & a, const Point & b) const {
@@ -31,19 +19,6 @@ double BMF::getGeodesicDistance(const Point & a, const Point & b) const {
 	double d = R * c;
 
 	return d;
-}
-
-Point BMF::getLocalPoint(double lng, double lat) const {
-
-	Point point(toRadians(lng), toRadians(lat));
-
-	Point px(m_center.x, point.y);
-	Point py(point.x, m_center.y);
-
-	double dx = sign(point.x - m_center.x) * getGeodesicDistance(px, m_center);
-	double dy = sign(point.y - m_center.y) * getGeodesicDistance(py, m_center);
-
-	return Point(dx, dy);
 }
 
 }
