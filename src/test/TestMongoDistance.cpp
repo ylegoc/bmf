@@ -17,7 +17,6 @@ int main(int, char**) {
 
 	mongocxx::database db = client["bmf-proto"];
 
-	// Initialise with Grenoble Hotel de Ville
 	BMF bmfAPI;
 
 	mongocxx::collection settings = db["settings"];

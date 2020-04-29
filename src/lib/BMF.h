@@ -35,9 +35,15 @@ class BMF {
 
 public:
 	/**
-	 * Initialises with the longitude and latitude of the center in degrees.
+	 * Initialises the API.
 	 */
 	BMF();
+
+	/**
+	 * Sets the number of calculations per surface.
+	 * Prefer an odd value.
+	 */
+	void setNumberOfCalculations(int N);
 
 	/**
 	 * Gets the geodesic distance between two Point with geodesic coordinates (radians).
@@ -45,7 +51,34 @@ public:
 	 */
 	double getGeodesicDistance(const Point & a, const Point & b) const;
 
+	/**
+	 * Calculates the surface of a triangle.
+	 */
+	double calculateTriangleSurface(double a, double b, double c) const;
+
+	/**
+	 * Calculates the maximum surface for the quadrileter with sides a, b, c, d. The value x is the diagonal found for the maximum surface.
+	 */
+	double calculateMaxSurface(double a, double b, double c, double d, double& x, int N = -1) const;
+
+	/**
+	 * Calculates the maximum surface for the quadrilateral with sides a, b, c, d. The value x is the diagonal found for the maximum surface.
+	 * Prefer an odd value for N. Value of 1, 3 or 5 should be enough for our purpose.
+	 */
+	double calculateMaxSurfaceOpt(double a, double b, double c, double d, double& x, int N = -1) const;
+
+	/**
+	 * Evaluates the distance between two trajectories.
+	 */
+	double eval(Point start1, Point end1, double distance1, Point start2, Point end2, double distance2) const;
+
+	/**
+	 * Evaluates the distance between two trajectories.
+	 */
+	double evalOpt(Point start1, Point end1, double distance1, Point start2, Point end2, double distance2) const;
+
 private:
+	int m_N;
 	static constexpr double R = 6371.0;
 };
 

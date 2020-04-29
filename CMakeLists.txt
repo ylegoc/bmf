@@ -60,6 +60,24 @@ TARGET_LINK_LIBRARIES(bmftestmongodistance PUBLIC
 )
 
 
+ADD_EXECUTABLE(bmftestsurface
+	src/test/TestSurface.cpp
+)
+
+TARGET_LINK_LIBRARIES(bmftestsurface PUBLIC
+	bmf
+)
+
+
+ADD_EXECUTABLE(bmftestsearch
+	src/test/TestSearch.cpp
+)
+
+TARGET_LINK_LIBRARIES(bmftestsearch PUBLIC
+	bmf -lmongocxx -lbsoncxx -pthread
+)
+
+
 ### Installs ###
 
 INSTALL(
