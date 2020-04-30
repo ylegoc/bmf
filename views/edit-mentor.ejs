@@ -7,17 +7,24 @@
 </head>
 
 <body>
-    <form action="/add_mentor" method="post">
+    <form action="/update_mentor" method="post">
+        <h2>Mail</h2>
+        <!-- Mail must be readonly -->
+        <input type="text" name="mail" value="<%= mail %>" />
         <h2>Pseudo</h2>
         <input type="text" name="pseudo" value="<%= pseudo %>" />
-        <h2>Mail</h2>
-        <input type="text" name="mail" value="<%= mail %>" />
         <h2>Adresse de départ</h2>
         <input type="text" name="start" value="<%= start %>" />
         <h2>Adresse d'arrivée</h2>
         <input type="text" name="end" value="<%= end %>" />
 
-        <button type="submit">Créer</button>
+        <button type="submit">Mettre à jour</button>
+    </form>
+
+    <form action="/delete_mentor" method="post">
+        <input type="hidden" name="mail" value="<%= mail %>" />
+
+        <button type="submit">Effacer</button>
     </form>
 
 </body>

@@ -5,6 +5,10 @@ const bodyParser = require('body-parser');
 const database = require('./services/database');
 const createMentor = require('./routes/create-mentor');
 const addMentor = require('./routes/add-mentor');
+const connectMentor = require('./routes/connect-mentor');
+const editMentor = require('./routes/edit-mentor');
+const updateMentor = require('./routes/update-mentor');
+const deleteMentor = require('./routes/delete-mentor');
 
 const app = express();
 const port = 3000;
@@ -27,6 +31,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Routes.
 app.use('/create_mentor', createMentor);
 app.use('/add_mentor', addMentor);
+app.use('/connect_mentor', connectMentor);
+app.use('/edit_mentor', editMentor);
+app.use('/update_mentor', updateMentor);
+app.use('/delete_mentor', deleteMentor);
 
 // Set the view engine.
 app.set('view engine', 'ejs');

@@ -51,6 +51,53 @@ class Database {
         });
     }
 
+    findMentor(filter, callback) {
+
+        this._dbo.collection("mentors").findOne(filter, (err, res) => {
+            if (err) {
+                throw err;
+            }
+            
+            callback(res);
+        });
+    }
+
+    updateMentor(filter, mentor, callback) {
+
+        let newValues = { $set: {
+                "pseudo": mentor.pseudo,
+                "start": mentor.start,
+                "end": mentor.end,
+                "dist": mentor.dist
+            }
+        };
+
+        this._dbo.collection("mentors").updateOne(filter, newValues, (err, res) => {
+            if (err) {
+                throw err;
+            }
+            console.log("1 mentor updated");
+
+            let result = {
+                "pseudo": mentor.pseudo,
+                "distance": mentor.dist
+            }
+
+            callback(result);
+        });
+    }
+
+    deleteMentor(filter, callback) {
+
+        this._dbo.collection("mentors").deleteOne(filter, (err, res) => {
+            if (err) {
+                throw err;
+            }
+            console.log("1 mentor deleted");
+            
+            callback();
+        });
+    }
 }
 
 module.exports = new Database();

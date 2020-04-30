@@ -14,7 +14,7 @@ router.post('/', (req, res, next) => {
 
     // TODO: error to manage.
 
-    mentorController.add({
+    mentorController.update({
         "pseudo": req.body.pseudo,
         "mail": req.body.mail,
         "startLat": startLat,
@@ -23,7 +23,7 @@ router.post('/', (req, res, next) => {
         "endLng": endLng
     },
     (result) => {
-        res.render('mentor-creation-success', {
+        res.render('mentor-update-success', {
             "pseudo": result.pseudo,
             "distance": result.distance
         })
