@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= name %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+  <body>
+    <h1>Data file:<%= title %></h1>
+    <h2>x</h2>
+    <ul>
+      <% for (let v of data.x) { %>
+      <li>
+        <%= v %>
+      </li>
+      <% } %>
+    </ul>
+    <h2>y</h2>
+    <ul>
+      <% for (let v of data.y) { %>
+      <li>
+        <%= v %>
+      </li>
+      <% } %>
+    </ul>
+  </body>
+</html>

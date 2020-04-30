@@ -1,0 +1,20 @@
+{
+  "name": "bmf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./js/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "ejs": "^2.5.9",
+    "express": "^4.16.3",
+    "body-parser": "^1.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}

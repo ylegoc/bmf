@@ -34,3 +34,10 @@
 # Eclipse
 .settings
 /build-cpp/
+
+# Node
+/node_modules/
+/build/
+/dist/
+/bin/
+/release-builds/
