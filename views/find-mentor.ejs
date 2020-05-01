@@ -4,27 +4,115 @@
 <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        #map {
+            width: 80%;
+            height: 100%;
+            left: 20%;
+        }
+
+        #form {
+            width: 20%;
+            border: 3px;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            bottom: 5px;
+            left: 0%;
+            margin-left: 25px;
+        }
+    </style>
+
 </head>
 
 <body>
-    <form action="/display_mentors" method="post">
-        
-        <h2>Coordonnées de départ</h2>
-        <input type="text" name="start" value="" />
-        
-        <h2>Coordonnées d'arrivée</h2>
-        <input type="text" name="end" value="" />
+    <div id="map"></div>
 
-        <h2>Critère</h2>
-        <input type="radio" id="trajectory" name="search" value="trajectory">
-        <label for="male">Trajet le plus proche</label><br>
-        <input type="radio" id="start" name="search" value="start">
-        <label for="male">Départ le plus proche</label><br>
-        <input type="radio" id="end" name="search" value="end">
-        <label for="male">Arrivée la plus proche</label><br>
+    <script>
+        let i = 0;
+        let startLatLng;
+        let endLatLng;
+        let startMaker, endMarker;
+        let polyline;
 
-        <button type="submit">Trouver</button>
-    </form>
+        function onMapClick(e) {
+            
+            if (i === 0) {
+                startLatLng = [e.latlng.lat, e.latlng.lng];
+                startMarker = L.marker(startLatLng, { color: 'blue' });
+                startMarker.addTo(map);
+
+                let startLatLngText = e.latlng.lat.toFixed(5) + ', ' + e.latlng.lng.toFixed(5);
+
+                document.getElementById('startPoint').value = startLatLngText;
+                
+                ++i;
+            }
+            else if (i === 1) {
+                endLatLng = [e.latlng.lat, e.latlng.lng];
+                endMarker = L.marker(endLatLng, { color: 'red' });
+                endMarker.addTo(map);
+
+                let endLatLngText = e.latlng.lat.toFixed(5) + ', ' + e.latlng.lng.toFixed(5);
+
+                document.getElementById('endPoint').value = endLatLngText;
+
+                polyline = L.polyline([startLatLng, endLatLng]);
+                polyline.addTo(map);
+                ++i;
+            }
+            else if (i === 2) {
+                map.removeLayer(startMarker);
+                map.removeLayer(endMarker);
+                map.removeLayer(polyline);
+                i = 0;
+            }
+        }
+
+        // Initialize Leaflet .
+        let map = L.map('map').setView({ lon: 5.7517, lat: 45.1846 }, 13);
+
+        map.on('click', onMapClick);
+
+        // Add the OpenStreetMap tiles.
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+        }).addTo(map);
+
+        // Show the scale bar on the lower left corner.
+        L.control.scale().addTo(map);
+    </script>
+
+    <div id="form">
+        <form action="/display_mentors" method="post">
+
+            <h2>Coordonnées de départ</h2>
+            <input type="text" id="startPoint" name="start" value="" />
+
+            <h2>Coordonnées d'arrivée</h2>
+            <input type="text" id="endPoint" name="end" value="" />
+
+            <h2>Critère</h2>
+            <input type="radio" id="trajectory" name="search" value="trajectory">
+            <label for="male">Trajet le plus proche</label><br>
+            <input type="radio" id="start" name="search" value="start">
+            <label for="male">Départ le plus proche</label><br>
+            <input type="radio" id="end" name="search" value="end">
+            <label for="male">Arrivée la plus proche</label><br>
+
+            <button type="submit">Trouver</button>
+        </form>
+    </div>
 
 </body>
 
