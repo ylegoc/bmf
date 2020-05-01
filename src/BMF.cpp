@@ -261,8 +261,9 @@ std::deque<MentorResult> DatabaseImpl::findBestMentors(const Point& start, const
 			score = m_bmf.getGeodesicDistance(end, endMentor);
 		}
 		else {
-			// The result is sqrt(...) to normalize to a distance in kms.
-			score = sqrt(m_bmf.evalOpt(start, end, distance, startMentor, endMentor, distanceMentor));
+			//score = sqrt(m_bmf.evalOpt(start, end, distance, startMentor, endMentor, distanceMentor));
+			//score = sqrt(m_bmf.getGeodesicDistance(start, startMentor) * m_bmf.getGeodesicDistance(end, endMentor));
+			score = 0.5 * (m_bmf.getGeodesicDistance(start, startMentor) + m_bmf.getGeodesicDistance(end, endMentor));
 		}
 
 		// Update the result.

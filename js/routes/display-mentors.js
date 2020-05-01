@@ -21,6 +21,10 @@ router.post('/', (req, res, next) => {
 
         res.render('display-mentors', {
             "title": "Liste de Mentors",
+            "startLng": startLng,
+            "startLat": startLat,
+            "endLng": endLng,
+            "endLat": endLat,
             "result": result
         });
     })

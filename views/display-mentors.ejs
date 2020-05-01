@@ -4,36 +4,118 @@
 <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        #map {
+            width: 80%;
+            height: 100%;
+            left: 20%;
+        }
+
+        #results {
+            width: 20%;
+            border: 3px;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            bottom: 5px;
+            left: 0%;
+            margin-left: 25px;
+        }
+    </style>
 </head>
 
 <body>
-    <h2>Voici les Mentors les plus proches</h2>
+    <div id="map"></div>
 
-    <table>
-        <tr>
-            <th>Mentor</th>
-            <th>Email</th>
-            <th>Distance</th>
-        </tr>
+    <script>
+        let startLat;
+        let startLng;
+        let endLat;
+        let endLng;
 
-        <% for(let i = 0; i < result.length; i++) { %>
+        function drawLine(startLat, startLng, endLat, endLng, color) {
+            polyline = L.polyline([[startLat, startLng], [endLat, endLng]], { color });
+            polyline.addTo(map);
+        }
+
+        // Initialize Leaflet .
+        let map = L.map('map').setView({ lon: 5.7517, lat: 45.1846 }, 13);
+
+        // Add the OpenStreetMap tiles.
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+        }).addTo(map);
+
+        // Show the scale bar on the lower left corner.
+        L.control.scale().addTo(map);
+
+        // Draw the trajectory searched.
+        startLat = Number('<%= startLat %>');
+        startLng = Number('<%= startLng %>');
+        endLat = Number('<%= endLat %>');
+        endLng = Number('<%= endLng %>');
+        drawLine(startLat, startLng, endLat, endLng, 'blue');
+    </script>
+
+    <div id="results">
+        <h2>Voici les Mentors les plus proches</h2>
+
+        <table>
+            <tr>
+                <th>Mentor</th>
+                <th>Email</th>
+                <th>Distance</th>
+            </tr>
+
+            <tr>
+                <td><%= result[0].pseudo %></td>
+                <td><%= result[0].mail %></td>
+                <td><%= result[0].score.toFixed(2) %></td>
+                <script>
+                    // We could instead iterate on the table dynamically with hidden fields.
+                    startLat = Number('<%= result[0].start[1] %>');
+                    startLng = Number('<%= result[0].start[0] %>');
+                    endLat = Number('<%= result[0].end[1] %>');
+                    endLng = Number('<%= result[0].end[0] %>');
+                    drawLine(startLat, startLng, endLat, endLng, 'red');
+                </script>
+            </tr>
+
+            <% for(let i = 1; i < result.length; i++) { %>
             <tr>
                 <td><%= result[i].pseudo %></td>
                 <td><%= result[i].mail %></td>
                 <td><%= result[i].score.toFixed(2) %></td>
+                <script>
+                    // We could instead iterate on the table dynamically with hidden fields.
+                    startLat = Number('<%= result[i].start[1] %>');
+                    startLng = Number('<%= result[i].start[0] %>');
+                    endLat = Number('<%= result[i].end[1] %>');
+                    endLng = Number('<%= result[i].end[0] %>');
+                    drawLine(startLat, startLng, endLat, endLng, 'grey');
+                </script>
             </tr>
-        <% } %>
+            <% } %>
 
-    </table>
+        </table>
 
-
-    <form action="/find_mentor" method="get">
-        <button type="submit">Trouver un Mentor</button>
-    </form>
-    <form action="/" method="get">
-        <button type="submit">Retour à l'accueil</button>
-    </form>
-
+        <form action="/find_mentor" method="get">
+            <button type="submit">Trouver un Mentor</button>
+        </form>
+        <form action="/" method="get">
+            <button type="submit">Retour à l'accueil</button>
+        </form>
+    </div>
 </body>
 
 </html>
