@@ -12,6 +12,10 @@ class BMF {
     getDistance(startLng, startLat, endLng, endLat) {
         return bmfAPI.getDistance(startLng, startLat, endLng, endLat);
     }
+
+    findBestMentors(startLng, startLat, endLng, endLat, searchType, numberOfResults) {
+        return bmfAPI.findBestMentors(startLng, startLat, endLng, endLat, searchType, numberOfResults);
+    }
 }
 
 module.exports = new BMF();

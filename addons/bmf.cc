@@ -72,6 +72,42 @@ void GetDistance(const FunctionCallbackInfo<Value>& args) {
     args.GetReturnValue().Set(Number::New(args.GetIsolate(), distance));
 }
 
+void FindBestMentors(const FunctionCallbackInfo<Value>& args) {
+
+    double startLng = Local<Number>::Cast(args[0])->Value();
+    double startLat = Local<Number>::Cast(args[1])->Value();
+    double endLng = Local<Number>::Cast(args[2])->Value();
+    double endLat = Local<Number>::Cast(args[3])->Value();
+
+    bmf::Point start(bmf::toRadians(startLng), bmf::toRadians(startLat));
+    bmf::Point end(bmf::toRadians(endLng), bmf::toRadians(endLat));
+
+    v8::String::Utf8Value param(args[4]->ToString());
+	string searchTypeParam(*param);
+
+    bmf::SearchType searchType = bmf::SearchType::TRAJECTORY;
+
+    if (searchTypeParam == "START") {
+        searchType = bmf::SearchType::START;
+    }
+    else if (searchTypeParam == "END") {
+        searchType = bmf::SearchType::END;
+    }
+    if (searchTypeParam == "TRAJECTORY") {
+        searchType = bmf::SearchType::TRAJECTORY;
+    }
+
+    int numberOfResults = Local<Integer>::Cast(args[0])->Value();
+
+    deque<string> results = database->findBestMentors(start, end, searchType, numberOfResults);
+
+    for (string m : results) {
+        cout << "mentor " << m << endl;
+    }
+
+    args.GetReturnValue().Set(Undefined(v8Isolate));
+}
+
 /**
  * The init function declares what we will make visible to node.
  */
@@ -80,6 +116,7 @@ void init(Local<Object> exports) {
 	// Register the functions.
 	NODE_SET_METHOD(exports, "init", Init);
 	NODE_SET_METHOD(exports, "getDistance", GetDistance);
+    NODE_SET_METHOD(exports, "findBestMentors", FindBestMentors);
 }
 
 NODE_MODULE(addonbmf, init)

@@ -1,6 +1,7 @@
 #include "BMF.h"
 #include <mongocxx/client.hpp>
 #include <mongocxx/instance.hpp>
+#include <bsoncxx/json.hpp>
 #include <iostream>
 
 using namespace std;
@@ -137,7 +138,7 @@ double BMF::calculateMaxSurfaceOpt(double a, double b, double c, double d, doubl
 	return maxSurface;
 }
 
-double BMF::eval(Point start1, Point end1, double distance1, Point start2, Point end2, double distance2) const {
+double BMF::eval(const Point& start1, const Point& end1, double distance1, const Point& start2, const Point& end2, double distance2) const {
 
 	// Calculate missing distances of the quadrilateral.
 	double a = getGeodesicDistance(start1, start2);
@@ -149,7 +150,7 @@ double BMF::eval(Point start1, Point end1, double distance1, Point start2, Point
 	return calculateMaxSurface(a, b, c, d, x);
 }
 
-double BMF::evalOpt(Point start1, Point end1, double distance1, Point start2, Point end2, double distance2) const {
+double BMF::evalOpt(const Point& start1, const Point& end1, double distance1, const Point& start2, const Point& end2, double distance2) const {
 
 	// Calculate missing distances of the quadrilateral.
 	double a = getGeodesicDistance(start1, start2);
@@ -165,6 +166,8 @@ class DatabaseImpl {
 
 public:
 	DatabaseImpl(const std::string& url, const std::string& db);
+
+	std::deque<std::string> findBestMentors(const Point& start, const Point& end, SearchType searchType, int numberOfResults);
 
 	mongocxx::instance m_instance;
 	mongocxx::client m_client;
@@ -184,11 +187,45 @@ DatabaseImpl::DatabaseImpl(const std::string& url, const std::string& db) {
 	m_mentors = m_db["mentors"];
 }
 
+std::deque<std::string> DatabaseImpl::findBestMentors(const Point& start, const Point& end, SearchType searchType, int numberOfResults) {
+
+	deque<string> result;
+
+	mongocxx::cursor cursor = m_mentors.find({});
+
+	int i = 0;
+
+	// Iterate the documents
+	for (bsoncxx::document::view document : cursor) {
+
+		// Pseudo
+		string pseudo = document["pseudo"].get_utf8().value.to_string();
+
+		// Start
+		double lng = document["start"].get_array().value[0].get_double();
+		double lat = document["start"].get_array().value[1].get_double();
+
+		result.push_back(bsoncxx::to_json(document));
+
+		++i;
+		if (i == numberOfResults) {
+			break;
+		}
+	}
+
+	return result;
+}
+
+
 Database::Database(const std::string& url, const std::string& db) :
 	m_impl(new DatabaseImpl(url, db)) {
 }
 
 Database::~Database() {
+}
+
+std::deque<std::string> Database::findBestMentors(const Point& start, const Point& end, SearchType searchType, int numberOfResults) {
+	return m_impl->findBestMentors(start, end, searchType, numberOfResults);
 }
 
 }

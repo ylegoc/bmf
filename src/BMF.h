@@ -4,6 +4,7 @@
 #include <cmath>
 #include <string>
 #include <memory>
+#include <deque>
 
 namespace bmf {
 
@@ -72,12 +73,12 @@ public:
 	/**
 	 * Evaluates the distance between two trajectories.
 	 */
-	double eval(Point start1, Point end1, double distance1, Point start2, Point end2, double distance2) const;
+	double eval(const Point& start1, const Point& end1, double distance1, const Point& start2, const Point& end2, double distance2) const;
 
 	/**
 	 * Evaluates the distance between two trajectories.
 	 */
-	double evalOpt(Point start1, Point end1, double distance1, Point start2, Point end2, double distance2) const;
+	double evalOpt(const Point& start1, const Point& end1, double distance1, const Point& start2, const Point& end2, double distance2) const;
 
 private:
 	int m_N;
@@ -85,6 +86,10 @@ private:
 	static constexpr double R = 6371.0;
 };
 
+/**
+ * Search type.
+ */
+enum class SearchType {START, END, TRAJECTORY};
 
 class DatabaseImpl;
 
@@ -104,6 +109,10 @@ public:
 	 */
 	~Database();
 
+	/**
+	 * Finds the best mentors for the trajectory start - end, using search type and limiting to numberOfResults.
+	 */
+	std::deque<std::string> findBestMentors(const Point& start, const Point& end, SearchType searchType, int numberOfResults);
 
 private:
 	std::unique_ptr<DatabaseImpl> m_impl;
