@@ -43,10 +43,14 @@ app.use('/delete_mentor', deleteMentor);
 // Set the view engine.
 app.set('view engine', 'ejs');
 
-// Default route.
+// Default routes.
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
+
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public', 'index.html'));
+})
 
 // Listen to the port defined previously.
 app.listen(port, () => {
