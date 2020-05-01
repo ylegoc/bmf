@@ -17,12 +17,20 @@ const displayMentors = require('./routes/display-mentors');
 const app = express();
 const port = 3000;
 
+// Get the args.
+let args = process.argv.slice(2);
+
+if (args.length < 2) {
+    console.log('Arguments: url db');
+    process.exit(1);
+}
+
 // Database.
-const url = "mongodb://mongo:mongo@localhost:27017";
-const db = "bmf-proto";
+const url = args[0];
+const db = args[1];
 
 database.connect(url, db, () => {
-    database.test();
+    console.log('Database connected');
 });
 
 bmf.init(url, db);

@@ -42,6 +42,15 @@ TARGET_LINK_LIBRARIES(bmfinitproto PUBLIC
 )
 
 
+ADD_EXECUTABLE(bmfinittest
+	src/test/InitTestDB.cpp
+)
+
+TARGET_LINK_LIBRARIES(bmfinittest PUBLIC
+	bmf -lmongocxx -lbsoncxx
+)
+
+
 ADD_EXECUTABLE(bmftestmongo
 	src/test/TestMongo.cpp
 )
