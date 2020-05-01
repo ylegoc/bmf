@@ -55,7 +55,9 @@ module.exports.delete = (mail, callback) => {
     database.deleteMentor(mentorFilter, callback);
 }
 
-module.exports.findBest = (startLng, startLat, endLng, endLat, searchType, numberOfResults) => {
+module.exports.findBest = (startLng, startLat, endLng, endLat, searchType, numberOfResults, callback) => {
 
     bmf.findBestMentors(startLng, startLat, endLng, endLat, searchType, numberOfResults);
+
+    callback();
 }

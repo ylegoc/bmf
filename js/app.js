@@ -11,6 +11,8 @@ const connectMentor = require('./routes/connect-mentor');
 const editMentor = require('./routes/edit-mentor');
 const updateMentor = require('./routes/update-mentor');
 const deleteMentor = require('./routes/delete-mentor');
+const findMentor = require('./routes/find-mentor');
+const displayMentors = require('./routes/display-mentors');
 
 const app = express();
 const port = 3000;
@@ -39,6 +41,8 @@ app.use('/connect_mentor', connectMentor);
 app.use('/edit_mentor', editMentor);
 app.use('/update_mentor', updateMentor);
 app.use('/delete_mentor', deleteMentor);
+app.use('/find_mentor', findMentor);
+app.use('/display_mentors', displayMentors);
 
 // Set the view engine.
 app.set('view engine', 'ejs');
