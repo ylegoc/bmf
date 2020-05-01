@@ -87,13 +87,13 @@ void FindBestMentors(const FunctionCallbackInfo<Value>& args) {
 
     bmf::SearchType searchType = bmf::SearchType::TRAJECTORY;
 
-    if (searchTypeParam == "START") {
+    if (searchTypeParam == "start") {
         searchType = bmf::SearchType::START;
     }
-    else if (searchTypeParam == "END") {
+    else if (searchTypeParam == "end") {
         searchType = bmf::SearchType::END;
     }
-    if (searchTypeParam == "TRAJECTORY") {
+    if (searchTypeParam == "trajectory") {
         searchType = bmf::SearchType::TRAJECTORY;
     }
 

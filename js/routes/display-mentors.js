@@ -12,8 +12,10 @@ router.post('/', (req, res, next) => {
     let endLat = parseFloat(endArray[0]);
     let endLng = parseFloat(endArray[1]);
 
+    let searchType = req.body.search;
+
     // Find best mentors from mentorController.
-    mentorController.findBest(startLng, startLat, endLng, endLat, "TRAJECTORY", 10, (result) => {
+    mentorController.findBest(startLng, startLat, endLng, endLat, searchType, 10, (result) => {
 
         // TODO: error page if not found.
 
