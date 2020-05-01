@@ -1,15 +1,17 @@
 const database = require('../services/database');
+const bmf = require('../services/bmf');
 
 module.exports.add = (mentor, callback) => {
 
-    // TODO: calculate dist.
+    // Calculate distance.
+    let distance = bmf.getDistance(mentor.startLng, mentor.startLat, mentor.endLng, mentor.endLat);
 
     let mentorDocument = {
         "pseudo": mentor.pseudo,
         "mail": mentor.mail,
         "start": [ mentor.startLng, mentor.startLat ],
         "end": [ mentor.endLng, mentor.endLat ],
-        "dist": 10
+        "dist": distance
     }
 
     database.addMentor(mentorDocument, callback);
@@ -26,7 +28,8 @@ module.exports.find = (mail, callback) => {
 
 module.exports.update = (mentor, callback) => {
 
-    // TODO: calculate dist.
+    // Calculate distance.
+    let distance = bmf.getDistance(mentor.startLng, mentor.startLat, mentor.endLng, mentor.endLat);
 
     let mentorFilter = {
         "mail": mentor.mail
@@ -37,7 +40,7 @@ module.exports.update = (mentor, callback) => {
         "mail": mentor.mail,
         "start": [ mentor.startLng, mentor.startLat ],
         "end": [ mentor.endLng, mentor.endLat ],
-        "dist": 10
+        "dist": distance
     }
 
     database.updateMentor(mentorFilter, mentorDocument, callback);

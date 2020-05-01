@@ -23,7 +23,7 @@ LINK_LIBRARIES(
 
 ### Lib ###
 ADD_LIBRARY(bmf SHARED
-	src/lib/BMF.cpp src/lib/BMF.h
+	src/BMF.cpp src/BMF.h
 )
 
 target_link_libraries(bmf
@@ -85,7 +85,7 @@ INSTALL(
 	DESTINATION lib
 )
 
-#INSTALL(
-#	TARGETS bmftestmongo
-#	DESTINATION bin
-#)
+INSTALL(DIRECTORY src/
+	DESTINATION include
+ 	FILES_MATCHING PATTERN "BMF.h"
+)

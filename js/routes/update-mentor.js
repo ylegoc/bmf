@@ -25,7 +25,7 @@ router.post('/', (req, res, next) => {
     (result) => {
         res.render('mentor-update-success', {
             "pseudo": result.pseudo,
-            "distance": result.distance
+            "distance": result.distance.toFixed(2)
         })
     });
 

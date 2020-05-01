@@ -2,6 +2,8 @@
 #define BMF_H
 
 #include <cmath>
+#include <string>
+#include <memory>
 
 namespace bmf {
 
@@ -79,7 +81,32 @@ public:
 
 private:
 	int m_N;
+
 	static constexpr double R = 6371.0;
+};
+
+
+class DatabaseImpl;
+
+/**
+ * Class database defining a connection to the mongo database.
+ */
+class Database {
+
+public:
+	/**
+	 * Initialises the connection.
+	 */
+	Database(const std::string& url, const std::string& db);
+
+	/**
+	 * Destructor.
+	 */
+	~Database();
+
+
+private:
+	std::unique_ptr<DatabaseImpl> m_impl;
 };
 
 }

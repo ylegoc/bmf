@@ -1,4 +1,6 @@
 #include "BMF.h"
+#include <mongocxx/client.hpp>
+#include <mongocxx/instance.hpp>
 #include <iostream>
 
 using namespace std;
@@ -157,6 +159,36 @@ double BMF::evalOpt(Point start1, Point end1, double distance1, Point start2, Po
 	double x;
 
 	return calculateMaxSurfaceOpt(a, b, c, d, x);
+}
+
+class DatabaseImpl {
+
+public:
+	DatabaseImpl(const std::string& url, const std::string& db);
+
+	mongocxx::instance m_instance;
+	mongocxx::client m_client;
+
+	mongocxx::database m_db;
+	mongocxx::collection m_settings;
+	mongocxx::collection m_mentors;
+};
+
+DatabaseImpl::DatabaseImpl(const std::string& url, const std::string& db) {
+
+	mongocxx::uri uri(url);
+	m_client = mongocxx::client(uri);
+
+	m_db = mongocxx::database(m_client[db]);
+	m_settings = m_db["settings"];
+	m_mentors = m_db["mentors"];
+}
+
+Database::Database(const std::string& url, const std::string& db) :
+	m_impl(new DatabaseImpl(url, db)) {
+}
+
+Database::~Database() {
 }
 
 }

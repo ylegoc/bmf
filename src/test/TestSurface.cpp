@@ -1,5 +1,5 @@
 #include <iostream>
-#include "lib/BMF.h"
+#include "BMF.h"
 
 using namespace std;
 using namespace bmf;

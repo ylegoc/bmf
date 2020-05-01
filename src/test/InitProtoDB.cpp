@@ -5,7 +5,7 @@
 #include <mongocxx/instance.hpp>
 #include <mongocxx/cursor.hpp>
 
-#include "lib/BMF.h"
+#include "BMF.h"
 
 using namespace std;
 

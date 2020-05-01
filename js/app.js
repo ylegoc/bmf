@@ -3,6 +3,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const database = require('./services/database');
+const bmf = require('./services/bmf');
+
 const createMentor = require('./routes/create-mentor');
 const addMentor = require('./routes/add-mentor');
 const connectMentor = require('./routes/connect-mentor');
@@ -20,6 +22,8 @@ const db = "bmf-proto";
 database.connect(url, db, () => {
     database.test();
 });
+
+bmf.init(url, db);
 
 // Resources.
 app.use(express.static('../public'));

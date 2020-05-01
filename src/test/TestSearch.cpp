@@ -7,7 +7,7 @@
 #include <string>
 #include <random>
 
-#include "lib/BMF.h"
+#include "BMF.h"
 
 using namespace std;
 using namespace bmf;
