@@ -91,6 +91,16 @@ private:
  */
 enum class SearchType {START, END, TRAJECTORY};
 
+/**
+ * Result for the findBestMentors function.
+ */
+struct MentorResult {
+	std::string mentor;
+	double score;
+
+	MentorResult(const std::string& aMentor, double aScore) : mentor(aMentor), score(aScore) {}
+};
+
 class DatabaseImpl;
 
 /**
@@ -112,7 +122,7 @@ public:
 	/**
 	 * Finds the best mentors for the trajectory start - end, using search type and limiting to numberOfResults.
 	 */
-	std::deque<std::string> findBestMentors(const Point& start, const Point& end, SearchType searchType, int numberOfResults);
+	std::deque<MentorResult> findBestMentors(const Point& start, const Point& end, SearchType searchType, int numberOfResults);
 
 private:
 	std::unique_ptr<DatabaseImpl> m_impl;

@@ -97,15 +97,25 @@ void FindBestMentors(const FunctionCallbackInfo<Value>& args) {
         searchType = bmf::SearchType::TRAJECTORY;
     }
 
-    int numberOfResults = Local<Integer>::Cast(args[0])->Value();
+    int numberOfResults = Local<Integer>::Cast(args[5])->Value();
 
-    deque<string> results = database->findBestMentors(start, end, searchType, numberOfResults);
+    deque<MentorResult> results = database->findBestMentors(start, end, searchType, numberOfResults);
 
-    for (string m : results) {
-        cout << "mentor " << m << endl;
+    Local<Array> resultArray = Array::New(v8Isolate, results.size());
+
+    int i = 0;
+    for (MentorResult m : results) {
+        //cout << "mentor " << m.mentor << " @ " << m.score << endl;
+
+        Local<Object> result = Object::New(v8Isolate);
+        result->Set(String::NewFromUtf8(v8Isolate, "mentor"), String::NewFromUtf8(v8Isolate, m.mentor.c_str()));
+        result->Set(String::NewFromUtf8(v8Isolate, "score"), Number::New(v8Isolate, m.score));
+
+        resultArray->Set(i, result);
+        ++i;
     }
 
-    args.GetReturnValue().Set(Undefined(v8Isolate));
+    args.GetReturnValue().Set(resultArray);
 }
 
 /**

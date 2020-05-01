@@ -18,7 +18,8 @@ router.post('/', (req, res, next) => {
         // TODO: error page if not found.
 
         res.render('display-mentors', {
-            "title": "Liste de Mentors"
+            "title": "Liste de Mentors",
+            "result": result
         });
     })
 

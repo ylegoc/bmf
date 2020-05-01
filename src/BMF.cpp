@@ -167,7 +167,7 @@ class DatabaseImpl {
 public:
 	DatabaseImpl(const std::string& url, const std::string& db);
 
-	std::deque<std::string> findBestMentors(const Point& start, const Point& end, SearchType searchType, int numberOfResults);
+	std::deque<MentorResult> findBestMentors(const Point& start, const Point& end, SearchType searchType, int numberOfResults);
 
 	mongocxx::instance m_instance;
 	mongocxx::client m_client;
@@ -175,6 +175,8 @@ public:
 	mongocxx::database m_db;
 	mongocxx::collection m_settings;
 	mongocxx::collection m_mentors;
+
+	BMF m_bmf;
 };
 
 DatabaseImpl::DatabaseImpl(const std::string& url, const std::string& db) {
@@ -185,32 +187,86 @@ DatabaseImpl::DatabaseImpl(const std::string& url, const std::string& db) {
 	m_db = mongocxx::database(m_client[db]);
 	m_settings = m_db["settings"];
 	m_mentors = m_db["mentors"];
+
+	// TODO set N from settings.
+	// m_bmf.setNumberOfCalculations(N);
 }
 
-std::deque<std::string> DatabaseImpl::findBestMentors(const Point& start, const Point& end, SearchType searchType, int numberOfResults) {
+void updateResult(std::deque<MentorResult>& result, double score, const std::string& mentor, int numberOfResults) {
 
-	deque<string> result;
+	// Insert immediately result is empty.
+	if (result.empty()) {
+		result.push_back(MentorResult(mentor, score));
+		return;
+	}
+
+	// Iterate the results.
+	auto it = result.begin();
+
+	while (it != result.end()) {
+
+		if (score < it->score) {
+			result.insert(it, MentorResult(mentor, score));
+
+			// Resize the result if size is too large.
+			if (result.size() > numberOfResults) {
+				result.pop_back();
+			}
+			return;
+		}
+
+		++it;
+	}
+
+	// The mentor is not yet inserted.
+	// Do it if the result is not full.
+	if (result.size() < numberOfResults) {
+		result.push_back(MentorResult(mentor, score));
+	}
+}
+
+std::deque<MentorResult> DatabaseImpl::findBestMentors(const Point& start, const Point& end, SearchType searchType, int numberOfResults) {
+
+	deque<MentorResult> result;
+
+	// Calculate the distance of the trajectory.
+	double distance = m_bmf.getGeodesicDistance(start, end);
 
 	mongocxx::cursor cursor = m_mentors.find({});
 
-	int i = 0;
-
-	// Iterate the documents
+	// Iterate the documents.
 	for (bsoncxx::document::view document : cursor) {
 
-		// Pseudo
-		string pseudo = document["pseudo"].get_utf8().value.to_string();
+		// Start.
+		bsoncxx::types::b_array a = document["start"].get_array();
+		double startLng = a.value[0].get_double();
+		double startLat = a.value[1].get_double();
+		Point startMentor(toRadians(startLng), toRadians(startLat));
 
-		// Start
-		double lng = document["start"].get_array().value[0].get_double();
-		double lat = document["start"].get_array().value[1].get_double();
+		// End.
+		a = document["end"].get_array();
+		double endLng = a.value[0].get_double();
+		double endLat = a.value[1].get_double();
+		Point endMentor(toRadians(endLng), toRadians(endLat));
 
-		result.push_back(bsoncxx::to_json(document));
+		double distanceMentor = document["dist"].get_double().value;
 
-		++i;
-		if (i == numberOfResults) {
-			break;
+		// Evaluate the trajectories.
+		double score = 0.0;
+
+		if (searchType == SearchType::START) {
+			score = m_bmf.getGeodesicDistance(start, startMentor);
 		}
+		else if (searchType == SearchType::END) {
+			score = m_bmf.getGeodesicDistance(end, endMentor);
+		}
+		else {
+			// The result is sqrt(...) to normalize to a distance in kms.
+			score = sqrt(m_bmf.evalOpt(start, end, distance, startMentor, endMentor, distanceMentor));
+		}
+
+		// Update the result.
+		updateResult(result, score, bsoncxx::to_json(document), numberOfResults);
 	}
 
 	return result;
@@ -224,7 +280,7 @@ Database::Database(const std::string& url, const std::string& db) :
 Database::~Database() {
 }
 
-std::deque<std::string> Database::findBestMentors(const Point& start, const Point& end, SearchType searchType, int numberOfResults) {
+std::deque<MentorResult> Database::findBestMentors(const Point& start, const Point& end, SearchType searchType, int numberOfResults) {
 	return m_impl->findBestMentors(start, end, searchType, numberOfResults);
 }
 

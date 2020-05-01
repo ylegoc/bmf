@@ -9,6 +9,24 @@
 <body>
     <h2>Voici les Mentors les plus proches</h2>
 
+    <table>
+        <tr>
+            <th>Mentor</th>
+            <th>Email</th>
+            <th>Distance</th>
+        </tr>
+
+        <% for(let i = 0; i < result.length; i++) { %>
+            <tr>
+                <td><%= result[i].pseudo %></td>
+                <td><%= result[i].mail %></td>
+                <td><%= result[i].score.toFixed(2) %></td>
+            </tr>
+        <% } %>
+
+    </table>
+
+
     <form action="/find_mentor" method="get">
         <button type="submit">Trouver un Mentor</button>
     </form>
