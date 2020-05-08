@@ -5,19 +5,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=He, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        .card-footer {
+            background: transparent;
+            border-top: 0px;
+        }
+    </style>
+
     <title>Bike Mentor Finder</title>
 </head>
 
 <body>
-    <form action="/find_mentor" method="get">
-        <button type="submit">Trouver un Mentor</button>
-    </form>
-    <form action="/create_mentor" method="get">
-        <button type="submit">Créer un Mentor</button>
-    </form>
-    <form action="/connect_mentor" method="get">
-        <button type="submit">Mettre à jour un Mentor</button>
-    </form>
+    <div class='container p-3'>
+        <div class='row px-3 py-3 pt-md-5 pb-md-4'>
+            <h1 class="display-4 mx-auto text-center">Bike Mentor Finder</h1>
+        </div>
+        <div class='row'>
+            <h2 class="mx-auto text-center">Trouvez votre mentor!</p>
+        </div>
+
+        <!-- https://getbootstrap.com/docs/4.0/components/card/ -->
+
+        <div class='row'>
+            <div class="card-deck">
+            <div class='card col-sm-4'>
+                <div class="card-body">
+                    <h5 class="card-title text-center">Trouver</h5>
+                    <p class="card-text">
+                        Vous voulez vous mettre au vélo pour aller travailler mais vous n'avez pas confiance en vous.
+                        Les mentors sont là pour vous!
+                    </p>
+                </div>
+                <div class="card-footer mx-auto">
+                    <form action="/find_mentor" method="get">
+                        <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end">Trouver un Mentor</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class='card col-sm-4'>
+                <div class="card-body">
+                    <h5 class="card-title text-center">Rejoindre</h5>
+                    <p class="card-text">
+                        Vous êtes à l'aise avec votre vélo et souhaitez faire profiter de votre expérience.
+                        Devenez un mentor et aidez les personnes proches de chez vous!
+                    </p>
+                </div>
+                <div class="card-footer mx-auto">
+                    <form action="/create_mentor" method="get">
+                        <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end">Créer un Mentor</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class='card col-sm-4'>
+                <div class="card-body">
+                    <h5 class="card-title text-center">Mettre à jour</h5>
+                    <p class="card-text">
+                        Vous êtes déjà un mentor et vous souhaitez mettre à jour vos informations.
+                    </p>
+                </div>
+                <div class="card-footer mx-auto">
+                    <form action="/connect_mentor" method="get">
+                        <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end">Mettre à jour un
+                            Mentor</button>
+                    </form>                    
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
 </body>
 
 </html>
