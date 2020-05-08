@@ -13,6 +13,7 @@ const updateMentor = require('./routes/update-mentor');
 const deleteMentor = require('./routes/delete-mentor');
 const findMentor = require('./routes/find-mentor');
 const displayMentors = require('./routes/display-mentors');
+const refindMentor = require('./routes/refind-mentor');
 const contactMentor = require('./routes/contact-mentor');
 const mailMentor = require('./routes/mail-mentor');
 
@@ -53,6 +54,7 @@ app.use('/update_mentor', updateMentor);
 app.use('/delete_mentor', deleteMentor);
 app.use('/find_mentor', findMentor);
 app.use('/display_mentors', displayMentors);
+app.use('/refind_mentor', refindMentor);
 app.use('/contact_mentor', contactMentor);
 app.use('/mail_mentor', mailMentor);
 

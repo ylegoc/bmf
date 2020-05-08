@@ -128,7 +128,13 @@
         <br/>
         <br/>
 
-        <form action="/find_mentor" method="get">
+        <form action="/refind_mentor" method="post">
+
+            <input type="hidden" name="startLat" value="<%= startLat %>" />
+            <input type="hidden" name="startLng" value="<%= startLng %>" />
+            <input type="hidden" name="endLat" value="<%= endLat %>" />
+            <input type="hidden" name="endLng" value="<%= endLng %>" />
+
             <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-75">Trouver un Mentor</button>
         </form>
 

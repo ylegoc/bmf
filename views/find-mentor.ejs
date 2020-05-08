@@ -52,7 +52,6 @@
                 startMarker.addTo(map);
 
                 let startLatLngText = e.latlng.lat.toFixed(5) + ', ' + e.latlng.lng.toFixed(5);
-
                 document.getElementById('startPoint').value = startLatLngText;
                 
                 ++i;
@@ -63,7 +62,6 @@
                 endMarker.addTo(map);
 
                 let endLatLngText = e.latlng.lat.toFixed(5) + ', ' + e.latlng.lng.toFixed(5);
-
                 document.getElementById('endPoint').value = endLatLngText;
 
                 polyline = L.polyline([startLatLng, endLatLng], { color: 'red' });
@@ -127,6 +125,33 @@
         <form action="/" method="get">
             <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-75">Retour à l'accueil</button>
         </form>
+
+        <script>
+            let startLatStr = '<%= startLat %>';
+            let startLngStr = '<%= startLng %>';
+            let endLatStr = '<%= endLat %>';
+            let endLngStr = '<%= endLng %>';
+
+            // Draw the line of the previous coordinates if present.
+            if (startLatStr !== '' && startLngStr !== '' && endLatStr !== '' && endLngStr !== '') {
+                startLat = Number(startLatStr);
+                startLng = Number(startLngStr);
+                endLat = Number(endLatStr);
+                endLng = Number(endLngStr);
+
+                console.log('has coordinates')
+
+                let startLatLngText = startLat + ', ' + startLng;
+                document.getElementById('startPoint').value = startLatLngText;
+
+                let endLatLngText = endLat + ', ' + endLng;
+                document.getElementById('endPoint').value = endLatLngText;
+
+                polyline = L.polyline([[startLat, startLng], [endLat, endLng]], { color: 'red' });
+                polyline.addTo(map);
+            }
+            
+        </script>
     </div>
 
 </body>
