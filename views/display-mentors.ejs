@@ -50,7 +50,7 @@
 
         function drawLine(startLat, startLng, endLat, endLng, color) {
             polyline = L.polyline([[startLat, startLng], [endLat, endLng]], { color });
-            polyline.addTo(map);
+            //polyline.addTo(map);
 
             return polyline;
         }
@@ -72,12 +72,13 @@
         startLng = Number('<%= startLng %>');
         endLat = Number('<%= endLat %>');
         endLng = Number('<%= endLng %>');
-        drawLine(startLat, startLng, endLat, endLng, 'red');
+        let userLine = drawLine(startLat, startLng, endLat, endLng, 'red');
+        userLine.addTo(map);
 
         // The mentor trajectories.
         let trajectories = {};
         let mentorIds = {};
-        let selectedMentorId = '';
+        let selectedLine = null;
     </script>
 
     <div id="results">
@@ -103,7 +104,7 @@
                         startLng = Number('<%= result[i].start[0] %>');
                         endLat = Number('<%= result[i].end[1] %>');
                         endLng = Number('<%= result[i].end[0] %>');
-                        trajectories['row-<%= i %>'] = drawLine(startLat, startLng, endLat, endLng, 'grey');
+                        trajectories['row-<%= i %>'] = drawLine(startLat, startLng, endLat, endLng, '#0088ff');
                         mentorIds['row-<%= i %>'] = '<%= result[i]._id["$oid"] %>';
                     </script>
                 </tr>
@@ -157,12 +158,16 @@
             
             function selectMentor(row) {
 
+                if (selectedLine != null) {
+                    map.removeLayer(selectedLine);
+                }
+
                 row.className += " rowSelected";
-                trajectories[row.id].setStyle({ color: '#0088ff'});
-                selectedMentorId = mentorIds[row.id];
+                selectedLine = trajectories[row.id];
+                selectedLine.addTo(map);
 
                 let mentorId = document.getElementById('mentorId');
-                mentorId.value = selectedMentorId;
+                mentorId.value = mentorIds[row.id];
             }
 
             onRowClick("mentors", function (row) {
@@ -170,8 +175,6 @@
                 // The first row is the header.
                 for (let i = 1; i < rows.length; i++) {
                     rows[i].classList.remove('rowSelected');
-                    let rid = ('row-'+(i - 1));
-                    trajectories[rid].setStyle({ color: 'grey'});
                 }
 
                 selectMentor(row);
