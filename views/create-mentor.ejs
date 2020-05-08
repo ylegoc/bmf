@@ -6,6 +6,7 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style>
         html,
         body {
@@ -94,27 +95,33 @@
 
     <div id="form">
         <form action="/add_mentor" method="post">
-            <h2>Mail</h2>
-            <input type="text" name="mail" value="<%= mail %>" />
 
-            <h2>Pseudo</h2>
-            <input type="text" name="pseudo" value="<%= pseudo %>" />
-            
-            <h2>Point de départ</h2>
-            <h4>Cliquer une première fois sur la carte</h4>
-            <input type="text" id="startPoint" name="start" value="<%= start %>" />
-
-            <h2>Point d'arrivée</h2>
-            <h4>Cliquer une seconde fois sur la carte</h4>
-            <input type="text" id="endPoint" name="end" value="<%= end %>" />
-
-            <h4>Effacer en cliquant une troisième fois</h4>
-
+            <h4>Mail</h4>
+            <input type="text" class="form-control w-75" name="mail" value="<%= mail %>" placeholder="Entrer votre email"/>
             <br/>
-            <button type="submit">Créer</button>
+            <br/>
+            <h4>Pseudo</h4>
+            <input type="text" class="form-control w-75" name="pseudo" value="<%= pseudo %>" placeholder="Entrer votre pseudo"/>
+            <br/>
+            <br/>
+            <h4>Point de départ</h4>
+            <p>Cliquer une première fois sur la carte</p>
+            <input type="text" class="form-control w-75" id="startPoint" name="start" value="<%= start %>" placeholder="Coordonnées" readonly/>
+            <br/>
+            <br/>
+            <h4>Point d'arrivée</h4>
+            <p>Cliquer une seconde fois sur la carte</p>
+            <input type="text" class="form-control w-75" id="endPoint" name="end" value="<%= end %>" placeholder="Coordonnées" readonly/>
+            <br/>
+            <br/>
+            <p>Effacer le trajet en cliquant une troisième fois</p>
+            <br/>
+            <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-75">Créer</button>
         </form>
+        <br/>
+        <br/>
         <form action="/" method="get">
-            <button type="submit">Retour à l'accueil</button>
+            <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-75">Retour à l'accueil</button>
         </form>
     </div>
 </body>

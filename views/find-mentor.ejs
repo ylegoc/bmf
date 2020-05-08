@@ -98,31 +98,34 @@
 
             <h4>Point de départ</h4>
             <p>Cliquer une première fois sur la carte</p>
-            <input type="text" id="startPoint" name="start" value="" />
+            <input type="text" class="form-control w-75" id="startPoint" name="start" value="" placeholder="Coordonnées" readonly/>
             <br/>
             <br/>
             <h4>Point d'arrivée</h2>
             <p>Cliquer une seconde fois sur la carte</p>
-            <input type="text" id="endPoint" name="end" value="" />
-
+            <input type="text" class="form-control w-75" id="endPoint" name="end" value="" placeholder="Coordonnées" readonly/>
             <br/>
             <br/>
-
             <p>Effacer le trajet en cliquant une troisième fois</p>
-
             <h4>Critère</h4>
-            <input type="radio" id="trajectory" name="search" value="trajectory" checked="true">
-            <label for="male">Trajet le plus proche</label><br>
+
+            <input type="radio" id="trajectory" name="search" value="trajectory" checked>
+            <label for="trajectory">Trajet le plus proche</label><br>
             <input type="radio" id="start" name="search" value="start">
-            <label for="male">Départ le plus proche</label><br>
+            <label for="start">Départ le plus proche</label><br>
             <input type="radio" id="end" name="search" value="end">
-            <label for="male">Arrivée la plus proche</label><br>
+            <label for="end">Arrivée la plus proche</label><br>
 
             <br/>
             <br/>
 
             <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-75">Trouver</button>
 
+        </form>
+        <br/>
+        <br/>
+        <form action="/" method="get">
+            <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-75">Retour à l'accueil</button>
         </form>
     </div>
 
