@@ -76,6 +76,8 @@
 
         // The mentor trajectories.
         let trajectories = {};
+        let mentorIds = {};
+        let selectedMentorId = '';
     </script>
 
     <div id="results">
@@ -87,7 +89,6 @@
             <thead>
                 <tr>
                     <th>Mentor</th>
-                    <th>Email</th>
                     <th>Distance</th>
                 </tr>
             </thead>
@@ -95,7 +96,6 @@
                 <% for(let i = 0; i < result.length; i++) { %>
                 <tr id='row-<%= i %>'>
                     <td><%= result[i].pseudo %></td>
-                    <td><%= result[i].mail %></td>
                     <td><%= result[i].score.toFixed(2) %></td>
                     <script>
                         // We could instead iterate on the table dynamically with hidden fields.
@@ -104,6 +104,7 @@
                         endLat = Number('<%= result[i].end[1] %>');
                         endLng = Number('<%= result[i].end[0] %>');
                         trajectories['row-<%= i %>'] = drawLine(startLat, startLng, endLat, endLng, 'grey');
+                        mentorIds['row-<%= i %>'] = '<%= result[i]._id["$oid"] %>';
                     </script>
                 </tr>
                 <% } %>
@@ -142,10 +143,23 @@
 
                 row.className += " rowSelected";
                 trajectories[row.id].setStyle({ color: '#0088ff'});
+                selectedMentorId = mentorIds[row.id];
+
+                let mentorId = document.getElementById('mentorId');
+                mentorId.value = selectedMentorId;
             });
 
-
         </script>
+
+        <br/>
+        <br/>
+
+        <form action="/contact_mentor" method="post">
+
+            <input type="hidden" id="mentorId" name="mentorId" value="" />
+
+            <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-75">Contacter le Mentor</button>
+        </form>
 
         <br/>
         <br/>

@@ -13,6 +13,8 @@ const updateMentor = require('./routes/update-mentor');
 const deleteMentor = require('./routes/delete-mentor');
 const findMentor = require('./routes/find-mentor');
 const displayMentors = require('./routes/display-mentors');
+const contactMentor = require('./routes/contact-mentor');
+const mailMentor = require('./routes/mail-mentor');
 
 const app = express();
 const port = 3000;
@@ -51,6 +53,8 @@ app.use('/update_mentor', updateMentor);
 app.use('/delete_mentor', deleteMentor);
 app.use('/find_mentor', findMentor);
 app.use('/display_mentors', displayMentors);
+app.use('/contact_mentor', contactMentor);
+app.use('/mail_mentor', mailMentor);
 
 // Set the view engine.
 app.set('view engine', 'ejs');

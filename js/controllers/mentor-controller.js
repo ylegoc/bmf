@@ -1,5 +1,6 @@
 const database = require('../services/database');
 const bmf = require('../services/bmf');
+const ObjectId = require('mongodb').ObjectId; 
 
 module.exports.add = (mentor, callback) => {
 
@@ -21,6 +22,15 @@ module.exports.find = (mail, callback) => {
 
     let mentorFilter = {
         "mail": mail
+    }
+
+    database.findMentor(mentorFilter, callback);
+}
+
+module.exports.findById = (id, callback) => {
+
+    let mentorFilter = {
+        "_id": new ObjectId(id)
     }
 
     database.findMentor(mentorFilter, callback);
@@ -61,3 +71,11 @@ module.exports.findBest = (startLng, startLat, endLng, endLat, searchType, numbe
 
     callback(result);
 }
+
+module.exports.sendMailToMentor = (mail, message, callback) => {
+
+    console.log('sending mail to ' + mail + " : " + message);
+
+    callback();
+}
+

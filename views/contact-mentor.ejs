@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        html,
+        body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        #form {
+            width: 20%;
+            border: 3px;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            bottom: 5px;
+            left: 0%;
+            margin-left: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="form" class="mx-auto text-center">
+        <form action="/mail_mentor" method="post">
+
+            <input type="hidden" id="mentorId" name="mentorId" value="<%= mentorId %>" />
+
+            <h4>Mon adresse mail</h4>
+            <input type="text" class="form-control w-100" name="mail" value="" placeholder="Entrer votre email"/>
+            <br/>
+            <br/>
+            <h4>Mon message</h4>
+            <input type="text" class="form-control w-100" name="message" value="" placeholder="Entrer votre message"/>
+            <br/>
+            <br/>
+            <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-100">Envoyer message</button>
+        </form>
+        <br/>
+        <br/>
+        <form action="/" method="get">
+            <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-100">Retour à l'accueil</button>
+        </form>
+    </div>
+
+</body>
+
+</html>
