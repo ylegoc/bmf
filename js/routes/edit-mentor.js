@@ -14,8 +14,10 @@ router.post('/', (req, res, next) => {
             "pseudo": mentor.pseudo,
             "mail": mentor.mail,
             // We must revert lat and lng.
-            "start": [ mentor.start[1], mentor.start[0] ],
-            "end": [ mentor.end[1], mentor.end[0] ]
+            "startLat": mentor.start[1],
+            "startLng": mentor.start[0],
+            "endLat": mentor.end[1],
+            "endLng": mentor.end[0]
         });
     })
 

@@ -50,8 +50,6 @@
 
         function drawLine(startLat, startLng, endLat, endLng, color) {
             polyline = L.polyline([[startLat, startLng], [endLat, endLng]], { color });
-            //polyline.addTo(map);
-
             return polyline;
         }
 
@@ -72,13 +70,24 @@
         startLng = Number('<%= startLng %>');
         endLat = Number('<%= endLat %>');
         endLng = Number('<%= endLng %>');
+
+        let startMarker = L.marker([startLat, startLng]);
+        startMarker.addTo(map);
+        let endMarker = L.marker([endLat, endLng]);
+        endMarker.addTo(map);
+
         let userLine = drawLine(startLat, startLng, endLat, endLng, 'red');
         userLine.addTo(map);
 
         // The mentor trajectories.
         let trajectories = {};
         let mentors = {};
+        let startMarkers = {};
+        let endMarkers = {};
         let selectedLine = null;
+        let selectedStartMarker = null;
+        let selectedEndMarker = null;
+
     </script>
 
     <div id="results">
@@ -105,6 +114,8 @@
                         endLat = Number('<%= result[i].end[1] %>');
                         endLng = Number('<%= result[i].end[0] %>');
                         trajectories['row-<%= i %>'] = drawLine(startLat, startLng, endLat, endLng, '#0088ff');
+                        startMarkers['row-<%= i %>'] = L.marker([startLat, startLng]);
+                        endMarkers['row-<%= i %>'] = L.marker([endLat, endLng]);
                         mentors['row-<%= i %>'] = { id: '<%= result[i]._id["$oid"] %>', pseudo: '<%= result[i].pseudo %>'};
                     </script>
                 </tr>
@@ -168,10 +179,22 @@
                 if (selectedLine != null) {
                     map.removeLayer(selectedLine);
                 }
+                if (selectedStartMarker != null) {
+                    map.removeLayer(selectedStartMarker);
+                }
+                if (selectedEndMarker != null) {
+                    map.removeLayer(selectedEndMarker);
+                }
 
                 row.className += " rowSelected";
                 selectedLine = trajectories[row.id];
                 selectedLine.addTo(map);
+
+                selectedStartMarker = startMarkers[row.id];
+                selectedStartMarker.addTo(map);
+
+                selectedEndMarker = endMarkers[row.id];
+                selectedEndMarker.addTo(map);
 
                 let mentorId = document.getElementById('mentorId');
                 mentorId.value = mentors[row.id].id;

@@ -38,11 +38,16 @@
     <div id="map"></div>
 
     <script>
-        let i = 0;
+        let i = 2; // The line is already drawn.
         let startLatLng;
         let endLatLng;
         let startMaker, endMarker;
         let polyline;
+
+        function drawLine(startLat, startLng, endLat, endLng, color) {
+            polyline = L.polyline([[startLat, startLng], [endLat, endLng]], { color });
+            return polyline;
+        }
 
         function onMapClick(e) {
 
@@ -89,6 +94,20 @@
 
         // Show the scale bar on the lower left corner.
         L.control.scale().addTo(map);
+
+        // Draw the trajectory searched.
+        startLat = Number('<%= startLat %>');
+        startLng = Number('<%= startLng %>');
+        endLat = Number('<%= endLat %>');
+        endLng = Number('<%= endLng %>');
+
+        startMarker = L.marker([startLat, startLng]);
+        startMarker.addTo(map);
+        endMarker = L.marker([endLat, endLng]);
+        endMarker.addTo(map);
+
+        polyline = drawLine(startLat, startLng, endLat, endLng, 'red');
+        polyline.addTo(map);
     </script>
 
     <div id="form">
@@ -104,12 +123,12 @@
             <br/>
             <h4>Point de départ</h4>
             <p>Cliquer une première fois sur la carte</p>
-            <input type="text" class="form-control w-75" id="startPoint" name="start" value="<%= start %>" placeholder="Coordonnées" readonly/>
+            <input type="text" class="form-control w-75" id="startPoint" name="start" value="<%= startLat %>, <%= startLng %>" placeholder="Coordonnées" readonly/>
             <br/>
             <br/>
             <h4>Point d'arrivée</h4>
             <p>Cliquer une seconde fois sur la carte</p>
-            <input type="text" class="form-control w-75" id="endPoint" name="end" value="<%= end %>" placeholder="Coordonnées" readonly/>
+            <input type="text" class="form-control w-75" id="endPoint" name="end" value="<%= endLat %>, <%= endLng %>" placeholder="Coordonnées" readonly/>
             <br/>
             <br/>
             <p>Effacer le trajet en cliquant une troisième fois</p>
