@@ -6,6 +6,7 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style>
         html,
         body {
@@ -15,13 +16,13 @@
         }
 
         #map {
-            width: 80%;
+            width: 70%;
             height: 100%;
-            left: 20%;
+            left: 30%;
         }
 
         #results {
-            width: 20%;
+            width: 30%;
             border: 3px;
             position: absolute;
             right: 5px;
@@ -68,52 +69,64 @@
     </script>
 
     <div id="results">
-        <h2>Voici les Mentors les plus proches</h2>
+        <h4>Mentors les plus proches</h4>
+        
+        <br/>
+        
+        <table class="table w-75">
+            <thead>
+                <tr>
+                    <th>Mentor</th>
+                    <th>Email</th>
+                    <th>Distance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><%= result[0].pseudo %></td>
+                    <td><%= result[0].mail %></td>
+                    <td><%= result[0].score.toFixed(2) %></td>
+                    <script>
+                        // We could instead iterate on the table dynamically with hidden fields.
+                        startLat = Number('<%= result[0].start[1] %>');
+                        startLng = Number('<%= result[0].start[0] %>');
+                        endLat = Number('<%= result[0].end[1] %>');
+                        endLng = Number('<%= result[0].end[0] %>');
+                        drawLine(startLat, startLng, endLat, endLng, 'red');
+                    </script>
+                </tr>
 
-        <table>
-            <tr>
-                <th>Mentor</th>
-                <th>Email</th>
-                <th>Distance</th>
-            </tr>
+                <% for(let i = 1; i < result.length; i++) { %>
+                <tr>
+                    <td><%= result[i].pseudo %></td>
+                    <td><%= result[i].mail %></td>
+                    <td><%= result[i].score.toFixed(2) %></td>
+                    <script>
+                        // We could instead iterate on the table dynamically with hidden fields.
+                        startLat = Number('<%= result[i].start[1] %>');
+                        startLng = Number('<%= result[i].start[0] %>');
+                        endLat = Number('<%= result[i].end[1] %>');
+                        endLng = Number('<%= result[i].end[0] %>');
+                        drawLine(startLat, startLng, endLat, endLng, 'grey');
+                    </script>
+                </tr>
+                <% } %>
 
-            <tr>
-                <td><%= result[0].pseudo %></td>
-                <td><%= result[0].mail %></td>
-                <td><%= result[0].score.toFixed(2) %></td>
-                <script>
-                    // We could instead iterate on the table dynamically with hidden fields.
-                    startLat = Number('<%= result[0].start[1] %>');
-                    startLng = Number('<%= result[0].start[0] %>');
-                    endLat = Number('<%= result[0].end[1] %>');
-                    endLng = Number('<%= result[0].end[0] %>');
-                    drawLine(startLat, startLng, endLat, endLng, 'red');
-                </script>
-            </tr>
-
-            <% for(let i = 1; i < result.length; i++) { %>
-            <tr>
-                <td><%= result[i].pseudo %></td>
-                <td><%= result[i].mail %></td>
-                <td><%= result[i].score.toFixed(2) %></td>
-                <script>
-                    // We could instead iterate on the table dynamically with hidden fields.
-                    startLat = Number('<%= result[i].start[1] %>');
-                    startLng = Number('<%= result[i].start[0] %>');
-                    endLat = Number('<%= result[i].end[1] %>');
-                    endLng = Number('<%= result[i].end[0] %>');
-                    drawLine(startLat, startLng, endLat, endLng, 'grey');
-                </script>
-            </tr>
-            <% } %>
-
+            </tbody>
         </table>
 
+        <br/>
+        <br/>
+
         <form action="/find_mentor" method="get">
-            <button type="submit">Trouver un Mentor</button>
+            <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-75">Trouver un Mentor</button>
         </form>
+
+        <br/>
+        <br/>
+
         <form action="/" method="get">
-            <button type="submit">Retour à l'accueil</button>
+            <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-75">Retour à l'accueil</button>
         </form>
     </div>
 </body>
