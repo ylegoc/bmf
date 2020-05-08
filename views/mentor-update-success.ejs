@@ -2,17 +2,38 @@
 <html>
 
 <head>
-    <title>Mentor mis à jour</title>
+    <title>Mentor Créé</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">    
+    <style>
+        html,
+        body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        #form {
+            width: 20%;
+            border: 3px;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            bottom: 5px;
+            left: 0%;
+            margin-left: 25px;
+        }
+    </style>
 </head>
 
 <body>
-    <h2>Mentor <%= pseudo %> mis à jour avec succès.</h2>
-    <h2>La distance de votre trajet en ligne droite est de <%= distance %>kms.</h2>
+    <div id="form" class="mx-auto text-center">
+        <h4>Mentor <%= pseudo %> mis à jour avec succès.</h4>
+        <p>La distance de votre trajet en ligne droite est de <%= distance %>kms.</p>
 
-    <form action="/done" method="get">
-        <button type="submit">Retour à l'accueil</button>
-    </form>
+        <form action="/done" method="get">
+            <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-100">Retour à l'accueil</button>
+        </form>
+    </div>
 </body>
 
 </html>
