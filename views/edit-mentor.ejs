@@ -52,7 +52,6 @@
                 startMarker.addTo(map);
 
                 let startLatLngText = e.latlng.lat.toFixed(5) + ', ' + e.latlng.lng.toFixed(5);
-
                 document.getElementById('startPoint').value = startLatLngText;
 
                 ++i;
@@ -63,7 +62,6 @@
                 endMarker.addTo(map);
 
                 let endLatLngText = e.latlng.lat.toFixed(5) + ', ' + e.latlng.lng.toFixed(5);
-
                 document.getElementById('endPoint').value = endLatLngText;
 
                 polyline = L.polyline([startLatLng, endLatLng], { color: 'blue' });

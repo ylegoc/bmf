@@ -77,7 +77,7 @@
 
         // The mentor trajectories.
         let trajectories = {};
-        let mentorIds = {};
+        let mentors = {};
         let selectedLine = null;
     </script>
 
@@ -105,7 +105,7 @@
                         endLat = Number('<%= result[i].end[1] %>');
                         endLng = Number('<%= result[i].end[0] %>');
                         trajectories['row-<%= i %>'] = drawLine(startLat, startLng, endLat, endLng, '#0088ff');
-                        mentorIds['row-<%= i %>'] = '<%= result[i]._id["$oid"] %>';
+                        mentors['row-<%= i %>'] = { id: '<%= result[i]._id["$oid"] %>', pseudo: '<%= result[i].pseudo %>'};
                     </script>
                 </tr>
                 <% } %>
@@ -121,6 +121,7 @@
         <form action="/contact_mentor" method="post">
 
             <input type="hidden" id="mentorId" name="mentorId" value="" />
+            <input type="hidden" id="mentorPseudo" name="mentorPseudo" value="" />
 
             <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-75">Contacter le Mentor</button>
         </form>
@@ -173,7 +174,8 @@
                 selectedLine.addTo(map);
 
                 let mentorId = document.getElementById('mentorId');
-                mentorId.value = mentorIds[row.id];
+                mentorId.value = mentors[row.id].id;
+                mentorPseudo.value = mentors[row.id].pseudo;
             }
 
             onRowClick("mentors", function (row) {
@@ -184,7 +186,6 @@
                 }
 
                 selectMentor(row);
-
             });
 
             // Select the first mentor.

@@ -5,7 +5,8 @@ router.post('/', (req, res, next) => {
 
     res.render('contact-mentor', {
         "title": "Contacter un Mentor",
-        "mentorId": req.body.mentorId
+        "mentorId": req.body.mentorId,
+        "mentorPseudo": req.body.mentorPseudo
     });
     
 });
