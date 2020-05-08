@@ -112,44 +112,7 @@
             </tbody>
         </table>
 
-        <script>
-            // Table callback.
-            function onRowClick(tableId, callback) {
-                let table = document.getElementById(tableId),
-                    rows = table.getElementsByTagName("tr"),
-                    i;
-                // The first row is the header.
-                for (i = 1; i < rows.length; i++) {
-                    table.rows[i].onclick = function (row) {
-                        return function () {
-                            callback(row);
-                        };
-                    }(table.rows[i]);
-                }
-            };
-            
-            onRowClick("mentors", function (row) {
-
-                let table = document.getElementById("mentors"),
-                    rows = table.getElementsByTagName("tr"),
-                    i;
-
-                // The first row is the header.
-                for (i = 1; i < rows.length; i++) {
-                    rows[i].classList.remove('rowSelected');
-                    let rid = ('row-'+(i - 1));
-                    trajectories[rid].setStyle({ color: 'grey'});
-                }
-
-                row.className += " rowSelected";
-                trajectories[row.id].setStyle({ color: '#0088ff'});
-                selectedMentorId = mentorIds[row.id];
-
-                let mentorId = document.getElementById('mentorId');
-                mentorId.value = selectedMentorId;
-            });
-
-        </script>
+        <p>Cliquer sur une ligne de la table pour voir un autre Mentor</p>
 
         <br/>
         <br/>
@@ -174,6 +137,53 @@
         <form action="/" method="get">
             <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-75">Retour à l'accueil</button>
         </form>
+
+        <script>
+            let table = document.getElementById("mentors"),
+                rows = table.getElementsByTagName("tr");
+
+            // Table callback.
+            function onRowClick(tableId, callback) {
+                let i;
+                // The first row is the header.
+                for (i = 1; i < rows.length; i++) {
+                    table.rows[i].onclick = function (row) {
+                        return function () {
+                            callback(row);
+                        };
+                    }(table.rows[i]);
+                }
+            };
+            
+            function selectMentor(row) {
+
+                row.className += " rowSelected";
+                trajectories[row.id].setStyle({ color: '#0088ff'});
+                selectedMentorId = mentorIds[row.id];
+
+                let mentorId = document.getElementById('mentorId');
+                mentorId.value = selectedMentorId;
+            }
+
+            onRowClick("mentors", function (row) {
+
+                // The first row is the header.
+                for (let i = 1; i < rows.length; i++) {
+                    rows[i].classList.remove('rowSelected');
+                    let rid = ('row-'+(i - 1));
+                    trajectories[rid].setStyle({ color: 'grey'});
+                }
+
+                selectMentor(row);
+
+            });
+
+            // Select the first mentor.
+            if (rows.length > 0) {
+                selectMentor(rows[1]);
+            }
+
+        </script>
     </div>
 </body>
 
