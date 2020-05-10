@@ -139,6 +139,7 @@
 
         // Initialize Leaflet .
         let map = L.map('map').setView({ lon: 5.7517, lat: 45.1846 }, 13);
+        map.doubleClickZoom.disable();
 
         map.on('click', onMapClick);
 

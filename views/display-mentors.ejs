@@ -55,6 +55,7 @@
 
         // Initialize Leaflet .
         let map = L.map('map').setView({ lon: 5.7517, lat: 45.1846 }, 13);
+        map.doubleClickZoom.disable();
 
         // Add the OpenStreetMap tiles.
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
