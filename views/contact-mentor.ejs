@@ -22,21 +22,49 @@
             left: 0%;
             margin-left: 25px;
         }
+
+        .onError {
+            color: #ff0000;
+        }
+
     </style>
 </head>
 
 <body>
+    <script>
+        function validateEmail(mail) {
+            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+                return (true)
+            }
+            return false;
+        }
+
+        function validateForm() {
+
+            let mailLabel = document.getElementById("mailLabel");
+            mailLabel.classList.remove("onError");
+
+            let mail = document.forms["contactForm"]["mail"].value;
+            if (mail == "" || !validateEmail(mail)) {
+                mailLabel.className += " onError";
+                return false;
+            }
+        } 
+    </script>
+
     <div id="form" class="mx-auto text-center">
-        <form action="/mail_mentor" method="post">
+        <form name="contactForm" action="/mail_mentor" onsubmit="return validateForm()" method="post">
 
             <input type="hidden" id="mentorId" name="mentorId" value="<%= mentorId %>" />
 
-            <h4>Mon adresse mail</h4>
+            <h4 id="mailLabel">Mon adresse mail</h4>
             <input type="text" class="form-control w-100" name="mail" value="" placeholder="Entrer votre email"/>
             <br/>
             <br/>
             <h4>Mon message pour <%= mentorPseudo %></h4>
-            <textarea class="form-control w-100" rows="10" id="comment" name="message"></textarea>
+            <textarea class="form-control w-100" rows="10" id="comment" name="message">Bonjour <%= mentorPseudo %>,
+Je souhaiterais profiter de votre expérience afin de me mettre au vélo et serais ravi(e) d'une réponse positive de votre part.
+            </textarea>
             <br/>
             <br/>
             <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-100">Envoyer message</button>
