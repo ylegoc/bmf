@@ -4,7 +4,8 @@
 <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style>
         html,
         body {
@@ -12,6 +13,7 @@
             padding: 0;
             margin: 0;
         }
+
         #form {
             width: 20%;
             border: 3px;
@@ -22,21 +24,44 @@
             left: 0%;
             margin-left: 25px;
         }
+
+        .onError {
+            color: #ff0000;
+        }
+
     </style>
 </head>
 
 <body>
-    <div id="form" class="mx-auto text-center">
-        <form action="/edit_mentor" method="post">
+    <script>
+        function validateEmail(mail) {
+            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+                return (true)
+            }
+            return false;
+        }
 
-            <h4>Mes identifiants</h4>
-            <input type="text" class="form-control w-100" name="mail" value="" placeholder="Entrer votre email"/>
-            <br/>
-            <br/>
+        function validateForm() {
+            let mail = document.forms["connectForm"]["mail"].value;
+            if (mail == "" || !validateEmail(mail)) {
+                let label = document.getElementById("mailLabel");
+                label.className += " onError";
+                return false;
+            }
+        } 
+    </script>
+
+    <div id="form" class="mx-auto text-center">
+        <form name="connectForm" action="/edit_mentor" onsubmit="return validateForm()" method="post">
+
+            <h4 id="mailLabel">Adresse mail</h4>
+            <input type="text" class="form-control w-100" name="mail" value="" placeholder="Entrer votre email" />
+            <br />
+            <br />
             <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-100">Se connecter</button>
         </form>
-        <br/>
-        <br/>
+        <br />
+        <br />
         <form action="/" method="get">
             <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-100">Retour à l'accueil</button>
         </form>

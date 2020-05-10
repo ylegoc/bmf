@@ -31,10 +31,37 @@
             left: 0%;
             margin-left: 25px;
         }
+
+        .onError {
+            color: #ff0000;
+        }
+
     </style>
 </head>
 
 <body>
+    <script>
+        function validateForm() {
+
+            let startLabel = document.getElementById("startLabel");
+            startLabel.classList.remove("onError");
+            let endLabel = document.getElementById("endLabel");
+            endLabel.classList.remove("onError");
+
+            let start = document.forms["findForm"]["start"].value;
+            if (start == "") {
+                startLabel.className += " onError";
+                return false;
+            }
+
+            let end = document.forms["findForm"]["end"].value;
+            if (end == "") {
+                endLabel.className += " onError";
+                return false;
+            }
+        } 
+    </script>
+
     <div id="map"></div>
 
     <script>
@@ -72,6 +99,15 @@
                 map.removeLayer(startMarker);
                 map.removeLayer(endMarker);
                 map.removeLayer(polyline);
+
+                document.getElementById('startPoint').value = "";
+                document.getElementById('endPoint').value = "";
+
+                let startLabel = document.getElementById("startLabel");
+                startLabel.classList.remove("onError");
+                let endLabel = document.getElementById("endLabel");
+                endLabel.classList.remove("onError");
+
                 i = 0;
             }
         }
@@ -92,14 +128,14 @@
     </script>
 
     <div id="form">
-        <form action="/display_mentors" method="post">
+        <form name="findForm" action="/display_mentors" onsubmit="return validateForm()" method="post">
 
-            <h4>Point de départ</h4>
+            <h4 id="startLabel">Point de départ</h4>
             <p>Cliquer une première fois sur la carte</p>
             <input type="text" class="form-control w-75" id="startPoint" name="start" value="" placeholder="Coordonnées" readonly/>
             <br/>
             <br/>
-            <h4>Point d'arrivée</h2>
+            <h4 id="endLabel">Point d'arrivée</h2>
             <p>Cliquer une seconde fois sur la carte</p>
             <input type="text" class="form-control w-75" id="endPoint" name="end" value="" placeholder="Coordonnées" readonly/>
             <br/>
@@ -107,11 +143,11 @@
             <p>Effacer le trajet en cliquant une troisième fois</p>
             <h4>Critère</h4>
 
-            <input type="radio" id="trajectory" name="search" value="trajectory" checked>
+            <input type="radio" name="search" value="trajectory" checked>
             <label for="trajectory">Trajet le plus proche</label><br>
-            <input type="radio" id="start" name="search" value="start">
+            <input type="radio" name="search" value="start">
             <label for="start">Départ le plus proche</label><br>
-            <input type="radio" id="end" name="search" value="end">
+            <input type="radio" name="search" value="end">
             <label for="end">Arrivée la plus proche</label><br>
 
             <br/>
@@ -139,8 +175,6 @@
                 endLat = Number(endLatStr);
                 endLng = Number(endLngStr);
 
-                console.log('has coordinates')
-
                 let startLatLngText = startLat + ', ' + startLng;
                 document.getElementById('startPoint').value = startLatLngText;
 
@@ -149,6 +183,16 @@
 
                 polyline = L.polyline([[startLat, startLng], [endLat, endLng]], { color: 'red' });
                 polyline.addTo(map);
+
+                startLatLng = [startLat, startLng];
+                startMarker = L.marker(startLatLng);
+                startMarker.addTo(map);
+
+                endLatLng = [endLat, endLng];
+                endMarker = L.marker(endLatLng);
+                endMarker.addTo(map);
+
+                i = 2;
             }
             
         </script>

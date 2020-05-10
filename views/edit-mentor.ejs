@@ -31,6 +31,11 @@
             left: 0%;
             margin-left: 25px;
         }
+
+        .onError {
+            color: #ff0000;
+        }
+
     </style>
 </head>
 
@@ -77,6 +82,15 @@
                 map.removeLayer(startMarker);
                 map.removeLayer(endMarker);
                 map.removeLayer(polyline);
+
+                document.getElementById('startPoint').value = "";
+                document.getElementById('endPoint').value = "";
+
+                let startLabel = document.getElementById("startLabel");
+                startLabel.classList.remove("onError");
+                let endLabel = document.getElementById("endLabel");
+                endLabel.classList.remove("onError");
+
                 i = 0;
             }
         }
@@ -110,23 +124,53 @@
         polyline.addTo(map);
     </script>
 
+    <script>
+        function validateForm() {
+
+            let pseudoLabel = document.getElementById("pseudoLabel");
+            pseudoLabel.classList.remove("onError");
+            let startLabel = document.getElementById("startLabel");
+            startLabel.classList.remove("onError");
+            let endLabel = document.getElementById("endLabel");
+            endLabel.classList.remove("onError");
+
+            let pseudo = document.forms["updateForm"]["pseudo"].value;
+            if (pseudo == "") {
+                pseudoLabel.className += " onError";
+                return false;
+            }
+
+            let start = document.forms["updateForm"]["start"].value;
+            if (start == "") {
+                startLabel.className += " onError";
+                return false;
+            }
+
+            let end = document.forms["updateForm"]["end"].value;
+            if (end == "") {
+                endLabel.className += " onError";
+                return false;
+            }
+        } 
+    </script>
+
     <div id="form">
-        <form action="/update_mentor" method="post">
+        <form name="updateForm" action="/update_mentor" onsubmit="return validateForm()" method="post">
 
             <h4>Addresse mail</h4>
             <input type="text" class="form-control w-75" name="mail" value="<%= mail %>" readonly/>
             <br/>
             <br/>
-            <h4>Pseudo</h4>
-            <input type="text" class="form-control w-75" name="pseudo" value="<%= pseudo %>" placeholder="Entrer votre pseudo"/>
+            <h4 id="pseudoLabel">Pseudo</h4>
+            <input type="text" maxlength="20" class="form-control w-75" name="pseudo" value="<%= pseudo %>" placeholder="Entrer votre pseudo"/>
             <br/>
             <br/>
-            <h4>Point de départ</h4>
+            <h4 id="startLabel">Point de départ</h4>
             <p>Cliquer une première fois sur la carte</p>
             <input type="text" class="form-control w-75" id="startPoint" name="start" value="<%= startLat %>, <%= startLng %>" placeholder="Coordonnées" readonly/>
             <br/>
             <br/>
-            <h4>Point d'arrivée</h4>
+            <h4 id="endLabel">Point d'arrivée</h4>
             <p>Cliquer une seconde fois sur la carte</p>
             <input type="text" class="form-control w-75" id="endPoint" name="end" value="<%= endLat %>, <%= endLng %>" placeholder="Coordonnées" readonly/>
             <br/>
@@ -142,7 +186,7 @@
         <form action="/delete_mentor" method="post">
             <input type="hidden" name="mail" value="<%= mail %>" />
 
-            <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-75">Effacer</button>
+            <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-75">Se retirer</button>
         </form>
 
         <br/>
