@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mentor non Connecté</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">    
+    <style>
+        html,
+        body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        #form {
+            width: 20%;
+            height: 40%;
+            border: 3px;
+            position: absolute;
+            right: 5px;
+            top: 20%;
+            bottom: 5px;
+            left: 0%;
+            margin-left: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="form" class="mx-auto text-center">
+        <h4>L'adresse mail saisie ne correspond à aucun Mentor.</h4>
+        
+        <form action="/done" method="get">
+            <button type="submit" class="btn btn-lg btn-block btn-outline-primary align-self-end w-100">Retour à l'accueil</button>
+        </form>
+    </div>
+</body>
+
+</html>

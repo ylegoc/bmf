@@ -12,23 +12,34 @@ router.post('/', (req, res, next) => {
     let endLat = parseFloat(endArray[0]);
     let endLng = parseFloat(endArray[1]);
 
-    // TODO: error to manage.
+    // Find a mentor with mail address.
+    mentorController.find(req.body.mail, (mentor) => {
 
-    mentorController.add({
-        "pseudo": req.body.pseudo,
-        "mail": req.body.mail,
-        "startLat": startLat,
-        "startLng": startLng,
-        "endLat": endLat,
-        "endLng": endLng
-    },
-    (result) => {
-        res.render('mentor-creation-success', {
-            "pseudo": result.pseudo,
-            "distance": result.distance.toFixed(2)
-        })
-    });
-
+        // The mail is not already associated.
+        if (mentor == null) {
+            mentorController.add({
+                "pseudo": req.body.pseudo,
+                "mail": req.body.mail,
+                "startLat": startLat,
+                "startLng": startLng,
+                "endLat": endLat,
+                "endLng": endLng
+            },
+            (result) => {
+                res.render('mentor-creation-success', {
+                    "pseudo": result.pseudo,
+                    "distance": result.distance.toFixed(2)
+                })
+            });
+        }
+        // The mail is already associated.
+        else {
+            res.render('mentor-creation-failure', {
+                "pseudo": req.body.pseudo,
+                "mail": req.body.mail
+            });
+        }
+    })
     
 });
 
