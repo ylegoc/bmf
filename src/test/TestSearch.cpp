@@ -110,6 +110,8 @@ int main(int argc, char* argv[]) {
 		// Iterate the documents
 		for (bsoncxx::document::view document : cursor) {
 
+			cout << "Check " << document["_id"].get_oid().value.to_string() << endl;
+
 			// Pseudo.
 			string pseudo = document["pseudo"].get_utf8().value.to_string();
 

@@ -237,37 +237,42 @@ std::deque<MentorResult> DatabaseImpl::findBestMentors(const Point& start, const
 	// Iterate the documents.
 	for (bsoncxx::document::view document : cursor) {
 
-		// Start.
-		bsoncxx::types::b_array a = document["start"].get_array();
-		double startLng = a.value[0].get_double();
-		double startLat = a.value[1].get_double();
-		Point startMentor(toRadians(startLng), toRadians(startLat));
+		try {
+			// Start.
+			bsoncxx::types::b_array a = document["start"].get_array();
+			double startLng = a.value[0].get_double();
+			double startLat = a.value[1].get_double();
+			Point startMentor(toRadians(startLng), toRadians(startLat));
 
-		// End.
-		a = document["end"].get_array();
-		double endLng = a.value[0].get_double();
-		double endLat = a.value[1].get_double();
-		Point endMentor(toRadians(endLng), toRadians(endLat));
+			// End.
+			a = document["end"].get_array();
+			double endLng = a.value[0].get_double();
+			double endLat = a.value[1].get_double();
+			Point endMentor(toRadians(endLng), toRadians(endLat));
 
-		double distanceMentor = document["dist"].get_double().value;
+			double distanceMentor = document["dist"].get_double().value;
 
-		// Evaluate the trajectories.
-		double score = 0.0;
+			// Evaluate the trajectories.
+			double score = 0.0;
 
-		if (searchType == SearchType::START) {
-			score = m_bmf.getGeodesicDistance(start, startMentor);
+			if (searchType == SearchType::START) {
+				score = m_bmf.getGeodesicDistance(start, startMentor);
+			}
+			else if (searchType == SearchType::END) {
+				score = m_bmf.getGeodesicDistance(end, endMentor);
+			}
+			else {
+				//score = sqrt(m_bmf.evalOpt(start, end, distance, startMentor, endMentor, distanceMentor));
+				//score = sqrt(m_bmf.getGeodesicDistance(start, startMentor) * m_bmf.getGeodesicDistance(end, endMentor));
+				score = 0.5 * (m_bmf.getGeodesicDistance(start, startMentor) + m_bmf.getGeodesicDistance(end, endMentor));
+			}
+
+			// Update the result.
+			updateResult(result, score, bsoncxx::to_json(document), numberOfResults);
 		}
-		else if (searchType == SearchType::END) {
-			score = m_bmf.getGeodesicDistance(end, endMentor);
+		catch (...) {
+			cerr << "findBestMentors: Unexpected exception with document with _id " << document["_id"].get_oid().value.to_string() << endl;
 		}
-		else {
-			//score = sqrt(m_bmf.evalOpt(start, end, distance, startMentor, endMentor, distanceMentor));
-			//score = sqrt(m_bmf.getGeodesicDistance(start, startMentor) * m_bmf.getGeodesicDistance(end, endMentor));
-			score = 0.5 * (m_bmf.getGeodesicDistance(start, startMentor) + m_bmf.getGeodesicDistance(end, endMentor));
-		}
-
-		// Update the result.
-		updateResult(result, score, bsoncxx::to_json(document), numberOfResults);
 	}
 
 	return result;

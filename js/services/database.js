@@ -1,4 +1,5 @@
-const mongoClient = require('mongodb').MongoClient;
+const mongo = require('mongodb');
+const mongoClient = mongo.MongoClient;
 
 class Database {
 
@@ -36,7 +37,17 @@ class Database {
 
     addMentor(mentor, callback) {
 
-        this._dbo.collection("mentors").insertOne(mentor, (err, res) => {
+        // It is necessary to convert numbers to mongo Double, otherwise it is possible that numbers be integers.
+        // https://stackoverflow.com/questions/14382346/forcing-javascript-numbers-to-double-in-mongodb-document
+        let mentorDocument = {
+            "pseudo": mentor.pseudo,
+            "mail": mentor.mail,
+            "start": [ new mongo.Double(mentor.start[0]), new mongo.Double(mentor.start[1]) ],
+            "end": [ new mongo.Double(mentor.end[0]), new mongo.Double(mentor.end[1]) ],
+            "dist": new mongo.Double(mentor.dist)
+        }
+
+        this._dbo.collection("mentors").insertOne(mentorDocument, (err, res) => {
             if (err) {
                 throw err;
             }
@@ -64,11 +75,13 @@ class Database {
 
     updateMentor(filter, mentor, callback) {
 
+        // It is necessary to convert numbers to mongo Double, otherwise it is possible that numbers be integers.
+        // https://stackoverflow.com/questions/14382346/forcing-javascript-numbers-to-double-in-mongodb-document
         let newValues = { $set: {
                 "pseudo": mentor.pseudo,
-                "start": mentor.start,
-                "end": mentor.end,
-                "dist": mentor.dist
+                "start": [ new mongo.Double(mentor.start[0]), new mongo.Double(mentor.start[1]) ],
+                "end": [ new mongo.Double(mentor.end[0]), new mongo.Double(mentor.end[1]) ],
+                "dist": new mongo.Double(mentor.dist)
             }
         };
 

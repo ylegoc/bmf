@@ -1,13 +1,14 @@
 const database = require('../services/database');
 const bmf = require('../services/bmf');
-const ObjectId = require('mongodb').ObjectId; 
+const mongo = require('mongodb');
+const ObjectId = mongo.ObjectId;
 
 module.exports.add = (mentor, callback) => {
 
     // Calculate distance.
     let distance = bmf.getDistance(mentor.startLng, mentor.startLat, mentor.endLng, mentor.endLat);
 
-    let mentorDocument = {
+    let mentorObject = {
         "pseudo": mentor.pseudo,
         "mail": mentor.mail,
         "start": [ mentor.startLng, mentor.startLat ],
@@ -15,7 +16,7 @@ module.exports.add = (mentor, callback) => {
         "dist": distance
     }
 
-    database.addMentor(mentorDocument, callback);
+    database.addMentor(mentorObject, callback);
 }
 
 module.exports.find = (mail, callback) => {
