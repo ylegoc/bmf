@@ -43,10 +43,12 @@ void Init(const FunctionCallbackInfo<Value>& args) {
 	v8Isolate = args.GetIsolate();
 
 	// Get the args.
-	v8::String::Utf8Value param0(args[0]->ToString());
+	//v8::String::Utf8Value param0(args[0]->ToString());
+    v8::String::Utf8Value param0(v8Isolate, args[0]);
 	string url(*param0);
 
-    v8::String::Utf8Value param1(args[1]->ToString());
+    //v8::String::Utf8Value param1(args[1]->ToString());
+    v8::String::Utf8Value param1(v8Isolate, args[1]);
 	string db(*param1);
 
     cout << "url = " << url << endl;
@@ -74,6 +76,8 @@ void GetDistance(const FunctionCallbackInfo<Value>& args) {
 
 void FindBestMentors(const FunctionCallbackInfo<Value>& args) {
 
+    Local<Context> context = v8Isolate->GetCurrentContext();
+
     double startLng = Local<Number>::Cast(args[0])->Value();
     double startLat = Local<Number>::Cast(args[1])->Value();
     double endLng = Local<Number>::Cast(args[2])->Value();
@@ -82,7 +86,8 @@ void FindBestMentors(const FunctionCallbackInfo<Value>& args) {
     bmf::Point start(bmf::toRadians(startLng), bmf::toRadians(startLat));
     bmf::Point end(bmf::toRadians(endLng), bmf::toRadians(endLat));
 
-    v8::String::Utf8Value param(args[4]->ToString());
+    //v8::String::Utf8Value param(args[4]->ToString());
+    v8::String::Utf8Value param(v8Isolate, args[4]);
 	string searchTypeParam(*param);
 
     bmf::SearchType searchType = bmf::SearchType::TRAJECTORY;
@@ -108,10 +113,10 @@ void FindBestMentors(const FunctionCallbackInfo<Value>& args) {
         //cout << "mentor " << m.mentor << " @ " << m.score << endl;
 
         Local<Object> result = Object::New(v8Isolate);
-        result->Set(String::NewFromUtf8(v8Isolate, "mentor"), String::NewFromUtf8(v8Isolate, m.mentor.c_str()));
-        result->Set(String::NewFromUtf8(v8Isolate, "score"), Number::New(v8Isolate, m.score));
+        result->Set(context, String::NewFromUtf8(v8Isolate, "mentor").ToLocalChecked(), String::NewFromUtf8(v8Isolate, m.mentor.c_str()).ToLocalChecked());
+        result->Set(context, String::NewFromUtf8(v8Isolate, "score").ToLocalChecked(), Number::New(v8Isolate, m.score));
 
-        resultArray->Set(i, result);
+        resultArray->Set(context, i, result);
         ++i;
     }
 
