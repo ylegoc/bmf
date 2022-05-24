@@ -13,7 +13,7 @@ $ mongo
 
 ```
 use admin
-  db.createUser(
+db.createUser(
     {
       user: "mongo",
       pwd: "mongo",
@@ -34,6 +34,19 @@ $ sudo cmake --build . --target install
 
 A node.js version is required (>= 16)
 
+Set the npm proxy if necessary:
+
+```
+$ npm config set proxy <url>
+$ npm config set https-proxy <url>
+```
+
+Install node-gyp if necessary:
+
+```
+$ sudo -E npm install -g node-gyp
+```
+
 ```
 $ npm install
 $ ./node-gyp-rebuild.sh
@@ -49,6 +62,11 @@ $ ./bmfinittest 100
 Will initialize with 100 mentors.
 
 # Run the web site
+
+Ensure that *libbmf.so* is accessible:
+```
+$ export LD_LIBRARY_PATH=/usr/local/lib
+```
 
 Run the server:
 ```
